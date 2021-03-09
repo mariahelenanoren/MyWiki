@@ -1,13 +1,17 @@
 import React from "react";
 import Navbar from "./Navbar";
+import { NativeRouter } from "react-router-native";
+
 import MainContainer from "./MainContainer";
 import { View } from "react-native";
 
 export default function Layout() {
   return (
-    <View>
-      <Navbar />
-      <MainContainer />
-    </View>
+    <NativeRouter>
+      <View>
+        <Navbar />
+        <MainContainer />
+      </View>
+    </NativeRouter>
   );
 }

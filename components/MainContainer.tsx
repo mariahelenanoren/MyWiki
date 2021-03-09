@@ -1,18 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text } from "react-native";
+import { Route, Switch } from "react-router-native";
+import NewProject from "./NewProject";
+import DefaultMain from "./DefaultMain";
 
 export default function MainContainer() {
   return (
-    <View style={styles.view}>
-      <Text>Main</Text>
-    </View>
+    <Switch>
+      <Route exact path="/" component={DefaultMain} />
+      <Route path="/:title?" component={NewProject} />
+      <Text>Page cannot be fount</Text>
+    </Switch>
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    height: "100%",
-    width: "100%",
-    backgroundColor: "white",
-  },
-});
