@@ -13,9 +13,7 @@ interface Props extends RouteComponentProps<{}, {}, Navigation> {}
 
 function Navbar(props: Props) {
   if (props.location.state) {
-    console.log(1);
     if (props.location.state.navbarType === "mainNavbar") {
-      console.log(1.1);
       return (
         <MainNavbar
           styles={styles}
@@ -24,7 +22,6 @@ function Navbar(props: Props) {
         />
       );
     } else if (props.location.state.navbarType === "defaultNavbar") {
-      console.log(1.2);
       return (
         <DefaultNavbar
           styles={styles}
@@ -33,7 +30,6 @@ function Navbar(props: Props) {
         />
       );
     } else {
-      console.log(1.3);
       return (
         <DefaultNavbar
           styles={styles}
@@ -43,7 +39,6 @@ function Navbar(props: Props) {
       );
     }
   } else {
-    console.log(2);
     return (
       <MainNavbar
         styles={styles}

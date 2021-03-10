@@ -8,7 +8,7 @@ import { View } from "react-native";
 export default function Layout() {
   return (
     <NativeRouter>
-      <View>
+      <View style={{ flex: 1 }}>
         <Navbar />
         <MainContainer />
       </View>

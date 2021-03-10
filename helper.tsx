@@ -23,10 +23,11 @@ interface Data {
 export const getProjects = async () => {
   try {
     const projects = (await AsyncStorage.getItem("projects")) || "[]";
-    const parsedProjects = JSON.parse(projects);
+    const parsedProjects: Project[] | [] = JSON.parse(projects);
     return parsedProjects;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
