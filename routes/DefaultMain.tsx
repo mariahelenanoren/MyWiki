@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Link } from "react-router-native";
 import { getProjects } from "../helper";
-import { colorPalette } from "../helper";
+import { colorPalette, globalStyles } from "../styling";
 
 export default function MainContainer() {
   let data;
@@ -23,14 +23,24 @@ export default function MainContainer() {
   } else {
     return (
       <View style={styles.defaultView}>
-        <Text>You dont have any projects</Text>
+        <Text
+          style={{
+            ...globalStyles.text,
+            marginBottom: 5,
+            color: colorPalette.secondaryTextColor,
+          }}
+        >
+          You dont have any projects
+        </Text>
         <Link
           to={{
             pathname: "/new-project",
             state: { title: "New project", navbarType: "defaultNavbar" },
           }}
         >
-          <Text style={styles.link}>Click here to create one</Text>
+          <Text style={{ ...globalStyles.link, ...globalStyles.text }}>
+            Click here to create one
+          </Text>
         </Link>
       </View>
     );
@@ -44,11 +54,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",
-  },
-  link: {
-    color: colorPalette.primaryColor,
-    textDecorationLine: "underline",
-    textDecorationColor: colorPalette.primaryColor,
-    textDecorationStyle: "solid",
   },
 });

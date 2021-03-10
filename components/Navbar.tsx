@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { RouteComponentProps, withRouter } from "react-router-native";
-import { colorPalette } from "../helper";
+import { colorPalette } from "../styling";
+
 import MainNavbar from "./navbars/MainNavbar";
 import DefaultNavbar from "./navbars/DefaultNavbar";
 

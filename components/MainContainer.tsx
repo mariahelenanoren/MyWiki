@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { Route, Switch } from "react-router-native";
 import NewProject from "../routes/NewProject";
 import DefaultMain from "../routes/DefaultMain";
+import { globalStyles } from "../styling";
 
 export default function MainContainer() {
   return (
@@ -10,7 +11,7 @@ export default function MainContainer() {
       <Switch>
         <Route exact path="/" component={DefaultMain} />
         <Route path="/new-project" component={NewProject} />
-        <Text>Page cannot be fount</Text>
+        <Text style={globalStyles.text}>Page cannot be fount</Text>
       </Switch>
     </View>
   );

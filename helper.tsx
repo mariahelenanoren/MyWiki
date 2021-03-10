@@ -1,12 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const colorPalette = {
-  primaryColor: "#00B2FF",
-  secondaryColor: "#F6F6F6",
-  borderColor: "#CBCBCB",
-  secondaryTextColor: "#828282",
-};
-
 interface Project {
   title: string;
   description: string;
