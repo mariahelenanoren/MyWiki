@@ -1,37 +1,57 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { Link, RouteComponentProps, withRouter } from "react-router-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import { StyleSheet } from "react-native";
+import { RouteComponentProps, withRouter } from "react-router-native";
 import { colorPalette } from "../helper";
+import MainNavbar from "./navbars/MainNavbar";
+import DefaultNavbar from "./navbars/DefaultNavbar";
 
 interface Navigation {
   title: string;
+  navbarType: "mainNavbar" | "defaultNavbar" | "projectNavbar" | "detailNavbar";
 }
 interface Props extends RouteComponentProps<{}, {}, Navigation> {}
 
 function Navbar(props: Props) {
-  return (
-    <View style={styles.navbar}>
-      <Link
-        style={styles.iconLink}
-        to={{
-          pathname: "/new-project",
-          state: {
-            title: "New Project",
-          },
-        }}
-      >
-        <Icon
-          style={styles.icon}
-          name="add-circle"
-          color={colorPalette.primaryColor}
+  if (props.location.state) {
+    console.log(1);
+    if (props.location.state.navbarType === "mainNavbar") {
+      console.log(1.1);
+      return (
+        <MainNavbar
+          styles={styles}
+          colorPalette={colorPalette}
+          title={props.location.state.title}
         />
-      </Link>
-      <Text style={styles.navTitle}>
-        {props.location.state ? props.location.state.title : "Projects"}
-      </Text>
-    </View>
-  );
+      );
+    } else if (props.location.state.navbarType === "defaultNavbar") {
+      console.log(1.2);
+      return (
+        <DefaultNavbar
+          styles={styles}
+          colorPalette={colorPalette}
+          title={props.location.state.title}
+        />
+      );
+    } else {
+      console.log(1.3);
+      return (
+        <DefaultNavbar
+          styles={styles}
+          colorPalette={colorPalette}
+          title={props.location.state.title}
+        />
+      );
+    }
+  } else {
+    console.log(2);
+    return (
+      <MainNavbar
+        styles={styles}
+        colorPalette={colorPalette}
+        title="Projects"
+      />
+    );
+  }
 }
 
 export default withRouter(Navbar);
@@ -55,7 +75,6 @@ const styles = StyleSheet.create({
   },
   iconLink: {
     position: "absolute",
-    right: 35,
     backgroundColor: "transparent",
     zIndex: 100,
   },
