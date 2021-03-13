@@ -4,9 +4,7 @@ import Input from "../components/Input";
 import { globalStyles } from "../styling";
 
 export default function MainContainer() {
-  function onChange(value: string) {
-    console.log(value);
-  }
+  function onChange(value: string) {}
 
   return (
     <View style={styles.view}>

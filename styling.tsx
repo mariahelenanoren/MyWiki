@@ -4,6 +4,7 @@ export const colorPalette = {
   primaryColor: "#00B2FF",
   secondaryColor: "#F6F6F6",
   borderColor: "#CBCBCB",
+  defaultColor: "#ffffff",
   secondaryTextColor: "#828282",
 };
 
