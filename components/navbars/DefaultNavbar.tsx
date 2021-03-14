@@ -6,7 +6,6 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 interface Props {
   title: string;
   styles: any;
-  colorPalette: any;
 }
 
 function DefaultNavbar(props: Props) {

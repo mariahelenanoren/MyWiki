@@ -2,11 +2,11 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Link, RouteComponentProps, withRouter } from "react-router-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { colorPalette } from "../../styling";
 
 interface Props {
   title: string;
   styles: any;
-  colorPalette: any;
 }
 
 function MainNavbar(props: Props) {
@@ -25,7 +25,7 @@ function MainNavbar(props: Props) {
         <Icon
           style={props.styles.icon}
           name="add-circle"
-          color={props.colorPalette.primaryColor}
+          color={colorPalette.primaryColor}
         />
       </Link>
       <Text style={props.styles.navTitle}>{props.title}</Text>

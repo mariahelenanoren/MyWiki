@@ -27,7 +27,7 @@ export default function MainContainer() {
           style={{
             ...globalStyles.text,
             marginBottom: 5,
-            color: colorPalette.secondaryTextColor,
+            color: colorPalette.secondaryColor,
           }}
         >
           You dont have any projects

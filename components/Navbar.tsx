@@ -1,8 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { RouteComponentProps, withRouter } from "react-router-native";
-import { colorPalette } from "../styling";
-
 import MainNavbar from "./navbars/MainNavbar";
 import DefaultNavbar from "./navbars/DefaultNavbar";
 
@@ -15,38 +13,18 @@ interface Props extends RouteComponentProps<{}, {}, Navigation> {}
 function Navbar(props: Props) {
   if (props.location.state) {
     if (props.location.state.navbarType === "mainNavbar") {
-      return (
-        <MainNavbar
-          styles={styles}
-          colorPalette={colorPalette}
-          title={props.location.state.title}
-        />
-      );
+      return <MainNavbar styles={styles} title={props.location.state.title} />;
     } else if (props.location.state.navbarType === "defaultNavbar") {
       return (
-        <DefaultNavbar
-          styles={styles}
-          colorPalette={colorPalette}
-          title={props.location.state.title}
-        />
+        <DefaultNavbar styles={styles} title={props.location.state.title} />
       );
     } else {
       return (
-        <DefaultNavbar
-          styles={styles}
-          colorPalette={colorPalette}
-          title={props.location.state.title}
-        />
+        <DefaultNavbar styles={styles} title={props.location.state.title} />
       );
     }
   } else {
-    return (
-      <MainNavbar
-        styles={styles}
-        colorPalette={colorPalette}
-        title="Projects"
-      />
-    );
+    return <MainNavbar styles={styles} title="Projects" />;
   }
 }
 

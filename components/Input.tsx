@@ -9,13 +9,13 @@ interface Props {
 
 export default function Input(props: Props) {
   const [inputStyle, setInputStyle] = useState<StyleProp<any>>({
-    backgroundColor: colorPalette.secondaryColor,
+    backgroundColor: colorPalette.secondaryBgColor,
     borderColor: colorPalette.borderColor,
   });
 
   function changeStylingOnFocus() {
     setInputStyle({
-      backgroundColor: colorPalette.defaultColor,
+      backgroundColor: colorPalette.secondaryBgColor,
       borderColor: colorPalette.primaryColor,
     });
   }
@@ -30,7 +30,7 @@ export default function Input(props: Props) {
       }}
       onChangeText={(value) => props.onChange(value)}
       placeholder={props.placeholder}
-      placeholderTextColor={colorPalette.secondaryTextColor}
+      placeholderTextColor={colorPalette.secondaryColor}
       onFocus={changeStylingOnFocus}
     />
   );
