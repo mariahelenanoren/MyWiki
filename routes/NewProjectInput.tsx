@@ -1,13 +1,15 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { Link, useLocation, useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import { globalStyles } from "../styling";
 import NavigationBar from "../components/NavigationBar";
 import MainButton from "../components/MainButton";
 
-export default function MainContainer() {
-  function onChange(value: string) {}
+export default function ProjectInput() {
+  let { url } = useRouteMatch();
 
+  function onChange(value: string) {}
   function createProject() {}
 
   return (
@@ -34,9 +36,30 @@ export default function MainContainer() {
         >
           Add material
         </Text>
-        <NavigationBar title="Images" />
-        <NavigationBar title="Wikipedia" />
-        <NavigationBar title="News articles" />
+        <Link
+          to={{
+            pathname: url + "/images",
+            state: { title: "Images", navbarType: "defaultNavbar" },
+          }}
+        >
+          <NavigationBar title="Images" />
+        </Link>
+        <Link
+          to={{
+            pathname: url + "/wikipedia",
+            state: { title: "Wikipedia", navbarType: "defaultNavbar" },
+          }}
+        >
+          <NavigationBar title="Wikipedia" />
+        </Link>
+        <Link
+          to={{
+            pathname: url + "/articles",
+            state: { title: "News articles", navbarType: "defaultNavbar" },
+          }}
+        >
+          <NavigationBar title="News articles" />
+        </Link>
       </View>
       <View style={styles.buttonContainer}>
         <MainButton title="Create project" handlePress={() => createProject} />
