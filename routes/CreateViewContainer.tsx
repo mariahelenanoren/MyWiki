@@ -7,12 +7,12 @@ import {
   useLocation,
   useRouteMatch,
 } from "react-router-native";
-import ImagesApi from "./ImagesApi";
-import WikipediaApi from "./WikipediaApi";
-import ProjectInput from "./NewProjectInput";
-import NewsApi from "./NewsApi";
+import ImagesApi from "./ImagesView";
+import WikipediaApi from "./WikipediaView";
+import ProjectInput from "./CreateView";
+import NewsApi from "./NewsView";
 
-export default function MainContainer() {
+export default function CreateViewContainer() {
   let { url } = useRouteMatch();
 
   return (
@@ -20,7 +20,7 @@ export default function MainContainer() {
       <Route path={url + "/images"} component={ImagesApi} />
       <Route path={url + "/wikipedia"} component={WikipediaApi} />
       <Route path={url + "/articles"} component={NewsApi} />
-      <Route path={url} component={ProjectInput} />
+      <Route exact path={url} component={ProjectInput} />
     </Switch>
   );
 }

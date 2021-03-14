@@ -4,7 +4,7 @@ import { Link } from "react-router-native";
 import { getProjects } from "../helper";
 import { colorPalette, globalStyles } from "../styling";
 
-export default function MainContainer() {
+export default function DefaultMainView() {
   let data;
   getProjects()
     .then((results) => {

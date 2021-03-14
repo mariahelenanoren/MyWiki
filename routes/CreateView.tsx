@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Link, useLocation, useRouteMatch } from "react-router-native";
+import { Link, useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import { globalStyles } from "../styling";
 import NavigationBar from "../components/NavigationBar";
 import MainButton from "../components/MainButton";
 
-export default function ProjectInput() {
+export default function CreateView() {
   let { url } = useRouteMatch();
 
   function onChange(value: string) {}

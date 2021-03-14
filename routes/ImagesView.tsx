@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
 
-export default function ImagesApi() {
+export default function ImageView() {
   return <Text>Images</Text>;
 }

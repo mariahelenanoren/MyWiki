@@ -1,7 +1,6 @@
 import React from "react";
 import { Text } from "react-native";
-import { useRouteMatch } from "react-router-native";
 
-export default function ImagesApi() {
+export default function NewsView() {
   return <Text>News</Text>;
 }
