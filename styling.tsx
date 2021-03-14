@@ -25,4 +25,7 @@ export const globalStyles = StyleSheet.create({
   semiBold: {
     fontWeight: "500",
   },
+  flex: {
+    flex: 1,
+  },
 });

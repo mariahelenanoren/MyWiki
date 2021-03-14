@@ -7,7 +7,7 @@ import { globalStyles } from "../styling";
 
 export default function MainContainer() {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={globalStyles.flex}>
       <Switch>
         <Route exact path="/" component={DefaultMain} />
         <Route path="/new-project" component={NewProject} />
