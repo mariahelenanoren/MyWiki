@@ -8,7 +8,7 @@ interface Props {
   icon?: string;
 }
 
-export default function Input(props: Props) {
+export default function NavigationBar(props: Props) {
   const [iconState, setIconState] = useState({
     isSelected: false,
   });
@@ -37,7 +37,7 @@ export default function Input(props: Props) {
         ) : null}
         <Text style={globalStyles.text}>{props.title}</Text>
       </View>
-      <Icon name="arrow-forward" style={styles.navIcon} />
+      <Icon name="arrow-forward-ios" style={styles.navIcon} />
     </View>
   );
 }
@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderWidth: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    marginBottom: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    marginBottom: 15,
     borderColor: colorPalette.borderColor,
   },
   buttonIcon: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   navIcon: {
-    fontSize: 20,
+    fontSize: 15,
   },
   titleContainer: {
     display: "flex",

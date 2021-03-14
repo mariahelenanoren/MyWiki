@@ -15,7 +15,7 @@ export default function Input(props: Props) {
 
   function changeStylingOnFocus() {
     setInputStyle({
-      backgroundColor: colorPalette.secondaryBgColor,
+      backgroundColor: colorPalette.primaryBgColor,
       borderColor: colorPalette.primaryColor,
     });
   }
@@ -39,8 +39,8 @@ export default function Input(props: Props) {
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    marginBottom: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    marginBottom: 15,
   },
 });

@@ -1,15 +1,17 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import Input from "../components/Input";
-import NavigationButton from "../components/NavigationButton";
 import { globalStyles } from "../styling";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import NavigationBar from "../components/NavigationBar";
+import MainButton from "../components/MainButton";
 
 export default function MainContainer() {
   function onChange(value: string) {}
 
+  function createProject() {}
+
   return (
-    <View style={styles.view}>
+    <View style={styles.mainContainer}>
       <Input
         onChange={(value) => onChange(value)}
         placeholder="Project title"
@@ -18,8 +20,10 @@ export default function MainContainer() {
         onChange={(value) => onChange(value)}
         placeholder="Project description"
       />
-      <Text style={globalStyles.text}>Project color</Text>
-      <View style={{ marginTop: 40 }}>
+      <Text style={{ ...globalStyles.text, paddingVertical: 15 }}>
+        Project color
+      </Text>
+      <View style={{ marginTop: 60 }}>
         <Text
           style={{
             ...globalStyles.title,
@@ -30,20 +34,27 @@ export default function MainContainer() {
         >
           Add material
         </Text>
-        <NavigationButton icon="check-box" title="Images" />
-        <NavigationButton title="Wikipedia" />
-        <NavigationButton title="News articles" />
+        <NavigationBar title="Images" />
+        <NavigationBar title="Wikipedia" />
+        <NavigationBar title="News articles" />
+      </View>
+      <View style={styles.buttonContainer}>
+        <MainButton title="Create project" handlePress={() => createProject} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  view: {
+  mainContainer: {
     paddingVertical: 35,
     paddingHorizontal: 35,
     height: "100%",
     width: "100%",
     backgroundColor: "white",
+  },
+  buttonContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
   },
 });
