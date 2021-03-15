@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { unsplashKey } from "./key";
 interface Project {
   title: string;
   description: string;
@@ -36,3 +36,18 @@ export const saveProject = async (project: Project) => {
     console.log(error);
   }
 };
+
+export async function getImages(keyword: string) {
+  const axios = require("axios").default;
+  try {
+    const response = await axios.get(
+      "https://api.unsplash.com/search/photos?client_id=" +
+        unsplashKey +
+        "&query=" +
+        keyword
+    );
+    return response.data.results;
+  } catch (error) {
+    return error;
+  }
+}
