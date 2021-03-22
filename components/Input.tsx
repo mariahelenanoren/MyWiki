@@ -20,6 +20,13 @@ export default function Input(props: Props) {
     });
   }
 
+  function changeStylingOnBlur() {
+    setInputStyle({
+      backgroundColor: colorPalette.secondaryBgColor,
+      borderColor: colorPalette.borderColor,
+    });
+  }
+
   return (
     <TextInput
       style={{
@@ -32,6 +39,7 @@ export default function Input(props: Props) {
       placeholder={props.placeholder}
       placeholderTextColor={colorPalette.secondaryColor}
       onFocus={changeStylingOnFocus}
+      onBlur={changeStylingOnBlur}
     />
   );
 }

@@ -1,16 +1,19 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import { colorPalette, globalStyles } from "../styling";
 
 interface Props {
   onPress: () => void;
   title: string;
-  styles?: any;
+  style?: ViewStyle;
 }
 
 export default function MainButton(props: Props) {
   return (
-    <TouchableOpacity style={styles.mainButton} onPress={() => props.onPress()}>
+    <TouchableOpacity
+      style={{ ...styles.mainButton, ...props.style }}
+      onPress={() => props.onPress()}
+    >
       <Text style={{ ...styles.buttonTitle, ...globalStyles.text }}>
         {props.title}
       </Text>
