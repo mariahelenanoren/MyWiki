@@ -1,16 +1,8 @@
 import React, { useState, useEffect, createRef, useRef } from "react";
-import {
-  Image,
-  useWindowDimensions,
-  ScrollView,
-  StyleSheet,
-  View,
-  StyleProp,
-  ViewStyle,
-  Text,
-} from "react-native";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import Input from "../components/Input";
 import MainButton from "../components/MainButton";
+import ImageContainer from "../components/Image";
 import { getImages } from "../helper";
 import { globalStyles } from "../styling";
 
@@ -22,7 +14,6 @@ interface ImageUrl {
 }
 
 export default function ImageView() {
-  const windowWidth = useWindowDimensions().width;
   const [data, setData] = useState<ImageUrl[]>([]);
   const [pageCounter, setPageCounter] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -37,18 +28,22 @@ export default function ImageView() {
     dataResponse();
   }, [pageCounter, searchTerm]);
 
-  const handlePress = () => {
+  function loadImages() {
     scrollRef.current?.scrollTo({
       y: 0,
       animated: true,
     });
     setPageCounter(pageCounter + 1);
-  };
+  }
 
   return (
     <View style={globalStyles.flex}>
       <Input placeholder="Search" onChange={(value) => setSearchTerm(value)} />
-      {searchTerm ? <Text>Search results for: "{searchTerm}"</Text> : null}
+      {searchTerm ? (
+        <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
+          Search results for: "{searchTerm}"
+        </Text>
+      ) : null}
       {data.length ? (
         <>
           <ScrollView
@@ -56,16 +51,12 @@ export default function ImageView() {
             contentContainerStyle={styles.imageContainer}
           >
             {data.map((image) => (
-              <Image
-                key={image.urls.small}
-                style={{ ...styles.image, width: windowWidth / 2 - 40 }}
-                source={{ uri: image.urls.small }}
-              ></Image>
+              <ImageContainer urls={image.urls} />
             ))}
             <MainButton
               style={styles.button}
               title="Load more images"
-              onPress={() => handlePress()}
+              onPress={() => loadImages()}
             />
           </ScrollView>
         </>
@@ -79,6 +70,8 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: "cover",
     marginBottom: 10,
+    borderStyle: "solid",
+    borderWidth: 1,
   },
   imageContainer: {
     display: "flex",
@@ -89,5 +82,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 10,
+  },
+  query: {
+    marginTop: 25,
+    marginBottom: 10,
   },
 });
