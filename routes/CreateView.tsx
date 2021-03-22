@@ -13,7 +13,9 @@ export default function CreateView() {
   function createProject() {}
 
   return (
-    <ScrollView style={styles.mainContainer}>
+    <ScrollView
+      contentContainerStyle={{ ...styles.mainContainer, ...globalStyles.flex }}
+    >
       <Input
         onChange={(value) => onChange(value)}
         placeholder="Project title"
@@ -61,7 +63,7 @@ export default function CreateView() {
           <NavigationBar title="News articles" />
         </Link>
       </View>
-      <View style={styles.buttonContainer}>
+      <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>
         <MainButton title="Create project" handlePress={() => createProject} />
       </View>
     </ScrollView>
@@ -70,6 +72,7 @@ export default function CreateView() {
 
 const styles = StyleSheet.create({
   mainContainer: {
+    display: "flex",
     backgroundColor: "white",
   },
 
