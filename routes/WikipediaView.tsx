@@ -3,7 +3,7 @@ import { ScrollView, View, Text, StyleSheet } from "react-native";
 import Input from "../components/Input";
 import NavigationBar from "../components/NavigationBar";
 import { getWikipediaSections } from "../helper";
-import { globalStyles } from "../styling";
+import { colorPalette, globalStyles } from "../styling";
 
 interface Section {
   line: string;
@@ -40,21 +40,29 @@ export default function WikipediaView() {
     <View style={globalStyles.flex}>
       <Input onChange={(value) => handleChange(value)} placeholder="Search" />
       {searchTerm ? (
-        <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
-          Search results for: "{searchTerm}"
-        </Text>
-      ) : null}
-      <ScrollView>
-        {data.length
-          ? data.map((object: Section) => (
-              <NavigationBar
-                key={object.line}
-                title={object.line}
-                level={formatLevel(object.number)}
-              />
-            ))
-          : null}
-      </ScrollView>
+        <>
+          <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
+            Search results for: "{searchTerm}"
+          </Text>
+          <ScrollView>
+            {data.length
+              ? data.map((object: Section) => (
+                  <NavigationBar
+                    key={object.line}
+                    title={object.line}
+                    level={formatLevel(object.number)}
+                  />
+                ))
+              : null}
+          </ScrollView>
+        </>
+      ) : (
+        <View style={{ ...styles.defaultContainer, ...globalStyles.flex }}>
+          <Text style={{ ...globalStyles.text, ...styles.defaultText }}>
+            Please enter a search term to view Wikipedia articles
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -63,5 +71,15 @@ const styles = StyleSheet.create({
   query: {
     marginBottom: 10,
     marginTop: 25,
+  },
+  defaultContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  defaultText: {
+    color: colorPalette.secondaryColor,
+    textAlign: "center",
+    maxWidth: 220,
   },
 });
