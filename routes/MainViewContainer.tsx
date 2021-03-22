@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { Route, Switch } from "react-router-native";
 import CreateViewContainer from "./CreateViewContainer";
 import DefaultMainView from "./DefaultMainView";
@@ -7,7 +7,7 @@ import { globalStyles } from "../styling";
 
 export default function MainViewContainer() {
   return (
-    <View style={globalStyles.flex}>
+    <View style={{ ...styles.mainContainer, ...globalStyles.flex }}>
       <Switch>
         <Route exact path="/" component={DefaultMainView} />
         <Route path="/new-project" component={CreateViewContainer} />
@@ -16,3 +16,12 @@ export default function MainViewContainer() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    paddingVertical: 25,
+    paddingHorizontal: 35,
+    flex: 1,
+    backgroundColor: "white",
+  },
+});

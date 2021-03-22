@@ -64,7 +64,7 @@ export default function CreateView() {
         </Link>
       </View>
       <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>
-        <MainButton title="Create project" handlePress={() => createProject} />
+        <MainButton title="Create project" onPress={() => createProject} />
       </View>
     </ScrollView>
   );

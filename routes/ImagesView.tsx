@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from "react";
+import React, { useState, useEffect, createRef, useRef } from "react";
 import {
   Image,
   useWindowDimensions,
@@ -19,7 +19,7 @@ export default function ImageView() {
   const windowWidth = useWindowDimensions().width;
   const [data, setData] = useState<ImageUrl[]>([]);
   const [pageCounter, setPageCounter] = useState(1);
-  const scrollRef = createRef<ScrollView>();
+  const scrollRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     const dataResponse = async () => {
@@ -28,6 +28,14 @@ export default function ImageView() {
     };
     dataResponse();
   }, [pageCounter]);
+
+  const handlePress = () => {
+    console.log(scrollRef.current);
+    scrollRef.current?.scrollTo({
+      y: 0,
+      animated: true,
+    });
+  };
 
   return (
     <ScrollView ref={scrollRef} contentContainerStyle={styles.imageContainer}>
@@ -40,10 +48,7 @@ export default function ImageView() {
       ))}
       <MainButton
         title="Load more images"
-        handlePress={() => (
-          setPageCounter(pageCounter + 1),
-          scrollRef.current?.scrollTo({ y: 0, animated: false })
-        )}
+        onPress={() => (handlePress(), setPageCounter(pageCounter + 1))}
       />
     </ScrollView>
   );

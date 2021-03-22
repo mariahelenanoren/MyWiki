@@ -3,17 +3,14 @@ import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { colorPalette, globalStyles } from "../styling";
 
 interface Props {
-  handlePress: () => void;
+  onPress: () => void;
   title: string;
   styles?: any;
 }
 
 export default function MainButton(props: Props) {
   return (
-    <TouchableOpacity
-      style={styles.mainButton}
-      onPress={() => props.handlePress()}
-    >
+    <TouchableOpacity style={styles.mainButton} onPress={() => props.onPress()}>
       <Text style={{ ...styles.buttonTitle, ...globalStyles.text }}>
         {props.title}
       </Text>
