@@ -39,12 +39,19 @@ export const saveProject = async (project: Project) => {
 
 export async function getImages(keyword: string, page: number) {
   const axios = require("axios").default;
+  const formattedSearchTerm = formatQuery(keyword);
+  console.log(formattedSearchTerm);
   try {
     const response = await axios.get(
-      `https://api.unsplash.com/search/photos?per_page=18&page=${page}&client_id=${unsplashKey}&&query=${keyword}`
+      `https://api.unsplash.com/search/photos?per_page=18&page=${page}&client_id=${unsplashKey}&query=${formattedSearchTerm}`
     );
     return response.data.results;
   } catch (error) {
     return error;
   }
+}
+
+function formatQuery(searchTerm: string) {
+  const formattedSearchTerm = searchTerm.toLowerCase().split(" ").join("+");
+  return formattedSearchTerm;
 }

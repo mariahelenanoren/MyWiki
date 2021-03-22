@@ -7,6 +7,7 @@ import {
   View,
   StyleProp,
   ViewStyle,
+  Text,
 } from "react-native";
 import Input from "../components/Input";
 import MainButton from "../components/MainButton";
@@ -28,6 +29,7 @@ export default function ImageView() {
   const scrollRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
+    console.log("effect");
     const dataResponse = async () => {
       const response = await getImages(searchTerm, pageCounter);
       setData(response);
@@ -46,20 +48,28 @@ export default function ImageView() {
   return (
     <View style={globalStyles.flex}>
       <Input placeholder="Search" onChange={(value) => setSearchTerm(value)} />
-      <ScrollView ref={scrollRef} contentContainerStyle={styles.imageContainer}>
-        {data.map((image) => (
-          <Image
-            key={image.urls.small}
-            style={{ ...styles.image, width: windowWidth / 2 - 40 }}
-            source={{ uri: image.urls.small }}
-          ></Image>
-        ))}
-      </ScrollView>
-      <MainButton
-        style={styles.button}
-        title="Load more images"
-        onPress={() => handlePress()}
-      />
+      {searchTerm ? <Text>Search results for: "{searchTerm}"</Text> : null}
+      {data.length ? (
+        <>
+          <ScrollView
+            ref={scrollRef}
+            contentContainerStyle={styles.imageContainer}
+          >
+            {data.map((image) => (
+              <Image
+                key={image.urls.small}
+                style={{ ...styles.image, width: windowWidth / 2 - 40 }}
+                source={{ uri: image.urls.small }}
+              ></Image>
+            ))}
+            <MainButton
+              style={styles.button}
+              title="Load more images"
+              onPress={() => handlePress()}
+            />
+          </ScrollView>
+        </>
+      ) : null}
     </View>
   );
 }
