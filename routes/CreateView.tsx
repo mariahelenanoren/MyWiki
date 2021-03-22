@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { Link, useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import { globalStyles } from "../styling";
@@ -13,7 +13,7 @@ export default function CreateView() {
   function createProject() {}
 
   return (
-    <View style={styles.mainContainer}>
+    <ScrollView style={styles.mainContainer}>
       <Input
         onChange={(value) => onChange(value)}
         placeholder="Project title"
@@ -22,15 +22,15 @@ export default function CreateView() {
         onChange={(value) => onChange(value)}
         placeholder="Project description"
       />
-      <Text style={{ ...globalStyles.text, paddingVertical: 15 }}>
+      <Text style={{ ...globalStyles.text, paddingVertical: 12 }}>
         Project color
       </Text>
-      <View style={{ marginTop: 60 }}>
+      <View style={{ marginTop: 25 }}>
         <Text
           style={{
             ...globalStyles.title,
             textAlign: "center",
-            marginBottom: 25,
+            marginBottom: 20,
             ...globalStyles.semiBold,
           }}
         >
@@ -64,18 +64,15 @@ export default function CreateView() {
       <View style={styles.buttonContainer}>
         <MainButton title="Create project" handlePress={() => createProject} />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
-    paddingVertical: 35,
-    paddingHorizontal: 35,
-    height: "100%",
-    width: "100%",
     backgroundColor: "white",
   },
+
   buttonContainer: {
     flex: 1,
     justifyContent: "flex-end",

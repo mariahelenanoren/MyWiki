@@ -37,14 +37,11 @@ export const saveProject = async (project: Project) => {
   }
 };
 
-export async function getImages(keyword: string) {
+export async function getImages(keyword: string, page: number) {
   const axios = require("axios").default;
   try {
     const response = await axios.get(
-      "https://api.unsplash.com/search/photos?client_id=" +
-        unsplashKey +
-        "&query=" +
-        keyword
+      `https://api.unsplash.com/search/photos?per_page=18&page=${page}&client_id=${unsplashKey}&&query=${keyword}`
     );
     return response.data.results;
   } catch (error) {

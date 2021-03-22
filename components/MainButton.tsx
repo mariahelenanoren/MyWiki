@@ -5,11 +5,15 @@ import { colorPalette, globalStyles } from "../styling";
 interface Props {
   handlePress: () => void;
   title: string;
+  styles?: any;
 }
 
 export default function MainButton(props: Props) {
   return (
-    <TouchableOpacity style={styles.mainButton}>
+    <TouchableOpacity
+      style={styles.mainButton}
+      onPress={() => props.handlePress()}
+    >
       <Text style={{ ...styles.buttonTitle, ...globalStyles.text }}>
         {props.title}
       </Text>
@@ -20,9 +24,10 @@ export default function MainButton(props: Props) {
 const styles = StyleSheet.create({
   mainButton: {
     display: "flex",
+    width: "100%",
     alignItems: "center",
     bottom: 0,
-    paddingVertical: 15,
+    paddingVertical: 12,
     paddingHorizontal: 12,
     backgroundColor: colorPalette.primaryColor,
   },

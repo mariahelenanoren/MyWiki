@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderWidth: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    marginBottom: 15,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    marginBottom: 12,
     borderColor: colorPalette.borderColor,
   },
   buttonIcon: {

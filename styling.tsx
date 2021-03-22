@@ -10,11 +10,11 @@ export const colorPalette = {
 
 export const globalStyles = StyleSheet.create({
   text: {
-    fontSize: 17,
+    fontSize: 16,
   },
   title: {
     fontWeight: "500",
-    fontSize: 18,
+    fontSize: 17,
   },
   link: {
     color: colorPalette.primaryColor,

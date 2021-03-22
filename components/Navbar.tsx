@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   icon: {
-    fontSize: 40,
+    fontSize: 35,
   },
 });

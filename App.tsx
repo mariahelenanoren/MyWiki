@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "./components/Layout";
+import Layout from "./routes/Layout";
 import { StyleSheet, SafeAreaView } from "react-native";
 
 export default function App() {

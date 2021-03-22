@@ -1,7 +1,6 @@
 import React from "react";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 import { NativeRouter } from "react-router-native";
-
 import MainViewContainer from "./MainViewContainer";
 import { View } from "react-native";
 import { globalStyles } from "../styling";

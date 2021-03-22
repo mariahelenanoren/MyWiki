@@ -39,8 +39,8 @@ export default function Input(props: Props) {
 const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    marginBottom: 15,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    marginBottom: 12,
   },
 });
