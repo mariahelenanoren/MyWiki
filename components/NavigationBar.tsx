@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 interface Props {
   title: string;
+  level?: number;
   icon?: string;
 }
 

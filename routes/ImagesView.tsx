@@ -29,10 +29,10 @@ export default function ImageView() {
   const scrollRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
-    console.log("effect");
     const dataResponse = async () => {
       const response = await getImages(searchTerm, pageCounter);
       setData(response);
+      console.log(response.anchor);
     };
     dataResponse();
   }, [pageCounter, searchTerm]);
