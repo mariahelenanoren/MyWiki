@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, StyleSheet, StyleProp, TextStyle } from "react-native";
+import { TextInput, StyleSheet } from "react-native";
 import { globalStyles, colorPalette } from "../styling";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function Input(props: Props) {
-  const [inputStyle, setInputStyle] = useState<StyleProp<any>>({
+  const [inputStyle, setInputStyle] = useState({
     backgroundColor: colorPalette.secondaryBgColor,
     borderColor: colorPalette.borderColor,
   });

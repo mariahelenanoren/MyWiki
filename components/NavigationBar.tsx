@@ -36,7 +36,21 @@ export default function NavigationBar(props: Props) {
             onPress={toggleIcon}
           />
         ) : null}
-        <Text style={globalStyles.text}>{props.title}</Text>
+        {props.level ? (
+          <Text
+            style={{
+              ...globalStyles.text,
+              ...styles.title,
+              marginLeft: props.level * 10,
+            }}
+          >
+            {props.title}
+          </Text>
+        ) : (
+          <Text style={{ ...globalStyles.text, ...styles.title }}>
+            {props.title}
+          </Text>
+        )}
       </View>
       <Icon name="arrow-forward-ios" style={styles.navIcon} />
     </View>
@@ -51,8 +65,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     borderWidth: 1,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    padding: 12,
     marginBottom: 12,
     borderColor: colorPalette.borderColor,
   },
@@ -64,8 +77,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   titleContainer: {
+    flex: 1,
+    paddingRight: 12,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
   },
+  title: {},
 });

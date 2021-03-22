@@ -50,7 +50,7 @@ export async function getImages(keyword: string, page: number) {
   }
 }
 
-export async function getWikipediaHeadlines(keyword: string) {
+export async function getWikipediaSections(keyword: string) {
   const axios = require("axios").default;
   const formattedSearchTerm = formatQuery(keyword);
   try {
