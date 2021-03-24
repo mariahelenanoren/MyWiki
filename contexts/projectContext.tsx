@@ -1,5 +1,4 @@
 import { Component, createContext } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getProjects } from "../helper";
 
 interface ContextState extends ProjectState {
@@ -24,8 +23,8 @@ export interface ProjectItem {
   title: string;
   description?: string;
   images?: Images[];
-  wikipeda?: WikipediaArticle[];
-  article?: Article[];
+  wikipediaArticle?: WikipediaArticle[];
+  newsArticle?: NewsArticle[];
 }
 
 interface Images {
@@ -41,7 +40,7 @@ interface WikipediaSection {
   content: string;
 }
 
-interface Article {
+interface NewsArticle {
   title: string;
   linkUrl: string;
   imageUrl: string;
