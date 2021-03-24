@@ -10,6 +10,7 @@ interface Props {
   iconPress?: (iconToggle: boolean) => void;
   level?: number;
   icon?: string;
+  navigationData?: unknown;
 }
 
 export default function NavigationBar(props: Props) {
@@ -31,35 +32,35 @@ export default function NavigationBar(props: Props) {
     <Link
       to={{
         pathname: props.path,
-        state: { title: props.title, navbarType: "defaultNavbar" },
+        state: {
+          title: props.title,
+          navbarType: "defaultNavbar",
+          navigationData: props.navigationData,
+        },
       }}
     >
       <View style={styles.buttonContainer}>
+        {props.icon ? (
+          <Icon
+            name={props.icon}
+            style={{ ...styles.buttonIcon, color: iconColor.color }}
+            onPress={() => (
+              toggleIcon(), props.iconPress ? props.iconPress(iconToggle) : null
+            )}
+          />
+        ) : null}
         <View style={styles.titleContainer}>
-          {props.icon ? (
-            <Icon
-              name={props.icon}
-              style={{ ...styles.buttonIcon, color: iconColor.color }}
-              onPress={() => (
-                toggleIcon(),
-                props.iconPress ? props.iconPress(iconToggle) : null
-              )}
-            />
-          ) : null}
           {props.level ? (
             <Text
               style={{
                 ...globalStyles.text,
-                ...styles.title,
                 marginLeft: props.level * 10,
               }}
             >
               {props.title}
             </Text>
           ) : (
-            <Text style={{ ...globalStyles.text, ...styles.title }}>
-              {props.title}
-            </Text>
+            <Text style={globalStyles.text}>{props.title}</Text>
           )}
         </View>
         <Icon name="arrow-forward-ios" style={styles.navIcon} />
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
     borderColor: colorPalette.borderColor,
   },
   buttonIcon: {
-    marginRight: 8,
     fontSize: 20,
   },
   navIcon: {
@@ -89,10 +89,10 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flex: 1,
-    paddingRight: 12,
     display: "flex",
+    paddingHorizontal: 8,
     flexDirection: "row",
     alignItems: "center",
+    flexWrap: "wrap",
   },
-  title: {},
 });
