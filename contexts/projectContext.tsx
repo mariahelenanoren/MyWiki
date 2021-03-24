@@ -1,47 +1,40 @@
 import { Component, createContext } from "react";
-import { getProjects } from "../helper";
-
 interface ContextState extends ProjectState {
-  project: ProjectItem[];
-  addProject: (project: ProjectItem) => void;
-  removeProject: () => void;
-  addImage: () => void;
-  addWikipediaArticle: () => void;
-  addWikipediaSection: () => void;
-  addNewsArticle: () => void;
-  removeImage: () => void;
-  removeWikipediaArticle: () => void;
-  removeWikipediaSection: () => void;
-  removeNewsArticle: () => void;
+  addImage: (imageUrl: string) => void;
+  addWikipediaArticle: (wikipediaArticle: WikipediaArticle) => void;
+  addWikipediaSection: (
+    wikipediaArticle: WikipediaArticle,
+    wikipediaSection: WikipediaSection
+  ) => void;
+  addNewsArticle: (newsArticle: NewsArticle) => void;
+  removeImage: (imageUrl: string) => void;
+  removeWikipediaArticle: (wikipediaArticle: WikipediaArticle) => void;
+  removeWikipediaSection: (
+    wikipediaArticle: WikipediaArticle,
+    wikipediaSection: WikipediaSection
+  ) => void;
+  removeNewsArticle: (newsArticle: NewsArticle) => void;
 }
-
 interface ProjectState {
-  project: ProjectItem[];
+  projects: ProjectItem[];
+  project: ProjectItem;
 }
-
 export interface ProjectItem {
   title: string;
   description?: string;
-  images?: Images[];
-  wikipediaArticle?: WikipediaArticle[];
-  newsArticle?: NewsArticle[];
+  images: string[];
+  wikipediaArticles: WikipediaArticle[];
+  newsArticles: NewsArticle[];
 }
-
-interface Images {
-  imageUrl: string;
-}
-
 export interface WikipediaArticle {
   title: string;
-  section: WikipediaSection[];
+  sections: WikipediaSection[];
 }
-
 export interface WikipediaSection {
   title: string;
   level: string;
   number: string;
 }
-
 interface NewsArticle {
   title: string;
   linkUrl: string;
@@ -53,9 +46,8 @@ interface NewsArticle {
 }
 
 export const ProjectContext = createContext<ContextState>({
-  project: [],
-  addProject: () => {},
-  removeProject: () => {},
+  projects: [],
+  project: { title: "", images: [], wikipediaArticles: [], newsArticles: [] },
   addImage: () => {},
   addWikipediaArticle: () => {},
   addWikipediaSection: () => {},
@@ -68,39 +60,137 @@ export const ProjectContext = createContext<ContextState>({
 
 export default class ProjectProvider extends Component<{}, ProjectState> {
   state: ProjectState = {
-    project: [],
+    projects: [],
+    project: {
+      title: "",
+      images: [],
+      wikipediaArticles: [],
+      newsArticles: [],
+    },
   };
 
-  componentDidMount() {
-    const projectResponse = async () => {
-      const response = await getProjects();
-      this.setState({ project: [...response] });
-    };
-    projectResponse();
-  }
-
-  addProject(project: ProjectItem) {
+  addImage(imageUrl: string) {
     this.setState({
-      project: [...this.state.project, project],
+      ...this.state,
+      project: {
+        ...this.state.project,
+        images: [...this.state.project.images, imageUrl],
+      },
     });
   }
-  removeProject() {}
-  addImage() {}
-  addWikipediaArticle() {}
-  addWikipediaSection() {}
-  addNewsArticle() {}
-  removeImage() {}
-  removeWikipediaArticle() {}
-  removeWikipediaSection() {}
+
+  addWikipediaArticle(wikipediaArticle: WikipediaArticle) {
+    this.setState({
+      ...this.state,
+      project: {
+        ...this.state.project,
+        wikipediaArticles: [
+          ...this.state.project.wikipediaArticles,
+          wikipediaArticle,
+        ],
+      },
+    });
+  }
+
+  addWikipediaSection(
+    wikipediaArticle: WikipediaArticle,
+    section: WikipediaSection
+  ) {
+    const changedArticle = this.state.project.wikipediaArticles.find(
+      (article) => article === wikipediaArticle
+    );
+    this.state.project.wikipediaArticles.map((article: WikipediaArticle) => {
+      if (article === changedArticle) {
+        this.setState({
+          ...this.state,
+          project: {
+            ...this.state.project,
+            wikipediaArticles: [
+              ...this.state.project.wikipediaArticles,
+              {
+                ...article,
+                sections: [...article.sections, section],
+              },
+            ],
+          },
+        });
+      }
+    });
+  }
+
+  addNewsArticle(newsArticle: NewsArticle) {
+    this.setState({
+      ...this.state,
+      project: {
+        ...this.state.project,
+        newsArticles: [...this.state.project.newsArticles, newsArticle],
+      },
+    });
+  }
+
+  removeImage(imageUrl: string) {
+    const filteredImages = this.state.project.images.filter(
+      (image) => image !== imageUrl
+    );
+    this.setState({
+      ...this.state,
+      project: {
+        ...this.state.project,
+        images: [...filteredImages],
+      },
+    });
+  }
+
+  removeWikipediaArticle(wikipediaArticle: WikipediaArticle) {
+    const filteredArticles = this.state.project.wikipediaArticles.filter(
+      (article) => article !== wikipediaArticle
+    );
+    this.setState({
+      ...this.state,
+      project: {
+        ...this.state.project,
+        wikipediaArticles: [...filteredArticles],
+      },
+    });
+  }
+
+  removeWikipediaSection(
+    wikipediaArticle: WikipediaArticle,
+    wikipediaSection: WikipediaSection
+  ) {
+    const changedArticle = this.state.project.wikipediaArticles.find(
+      (article) => article === wikipediaArticle
+    );
+
+    if (changedArticle) {
+      this.state.project.wikipediaArticles.map((article) => {
+        this.setState({
+          ...this.state,
+          project: {
+            ...this.state.project,
+            wikipediaArticles: [
+              ...this.state.project.wikipediaArticles,
+              {
+                ...changedArticle!,
+                ...article.sections.filter(
+                  (section) => section !== wikipediaSection
+                ),
+              },
+            ],
+          },
+        });
+      });
+    }
+  }
+
   removeNewsArticle() {}
 
   render() {
     return (
       <ProjectContext.Provider
         value={{
+          projects: this.state.projects,
           project: this.state.project,
-          addProject: this.addProject,
-          removeProject: this.removeProject,
           addImage: this.addImage,
           addWikipediaArticle: this.addWikipediaArticle,
           addWikipediaSection: this.addWikipediaSection,
