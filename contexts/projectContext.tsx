@@ -3,7 +3,7 @@ import { getProjects } from "../helper";
 
 interface ContextState extends ProjectState {
   project: ProjectItem[];
-  addProject: () => void;
+  addProject: (project: ProjectItem) => void;
   removeProject: () => void;
   addImage: () => void;
   addWikipediaArticle: () => void;
@@ -31,13 +31,15 @@ interface Images {
   imageUrl: string;
 }
 
-interface WikipediaArticle {
+export interface WikipediaArticle {
+  title: string;
   section: WikipediaSection[];
 }
 
-interface WikipediaSection {
+export interface WikipediaSection {
   title: string;
-  content: string;
+  level: string;
+  number: string;
 }
 
 interface NewsArticle {
@@ -77,7 +79,11 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
     projectResponse();
   }
 
-  addProject() {}
+  addProject(project: ProjectItem) {
+    this.setState({
+      project: [...this.state.project, project],
+    });
+  }
   removeProject() {}
   addImage() {}
   addWikipediaArticle() {}

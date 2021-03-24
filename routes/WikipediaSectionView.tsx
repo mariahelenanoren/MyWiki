@@ -6,7 +6,7 @@ import { getWikipediaSection } from "../helper";
 
 interface Props extends RouteComponentProps<{}, {}, Navigation> {}
 interface Navigation {
-  navigationData: {
+  navigationProps: {
     section: string;
     searchTerm: string;
   };
@@ -19,7 +19,7 @@ function WikipediaSection(props: Props) {
   useEffect(() => {
     const dataResponse = async () => {
       const response = await getWikipediaSection(
-        props.location.state.navigationData.section,
+        props.location.state.navigationProps.section,
         navigation.wikipediaQuery
       );
       setData(response);
