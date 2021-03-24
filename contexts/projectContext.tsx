@@ -1,6 +1,9 @@
 import { Component, createContext } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getProjects } from "../helper";
 
-interface ProjectState extends Project {
+interface ContextState extends ProjectState {
+  project: ProjectItem[];
   addProject: () => void;
   removeProject: () => void;
   addImage: () => void;
@@ -13,7 +16,11 @@ interface ProjectState extends Project {
   removeNewsArticle: () => void;
 }
 
-interface Project {
+interface ProjectState {
+  project: ProjectItem[];
+}
+
+export interface ProjectItem {
   title: string;
   description?: string;
   images?: Images[];
@@ -44,8 +51,8 @@ interface Article {
   date: string;
 }
 
-export const ProjectContext = createContext<ProjectState>({
-  title: "",
+export const ProjectContext = createContext<ContextState>({
+  project: [],
   addProject: () => {},
   removeProject: () => {},
   addImage: () => {},
@@ -58,10 +65,18 @@ export const ProjectContext = createContext<ProjectState>({
   removeNewsArticle: () => {},
 });
 
-export default class ProjectProvider extends Component<{}, Project> {
-  state: Project = {
-    title: "",
+export default class ProjectProvider extends Component<{}, ProjectState> {
+  state: ProjectState = {
+    project: [],
   };
+
+  componentDidMount() {
+    const projectResponse = async () => {
+      const response = await getProjects();
+      this.setState({ project: [...response] });
+    };
+    projectResponse();
+  }
 
   addProject() {}
   removeProject() {}
@@ -78,7 +93,7 @@ export default class ProjectProvider extends Component<{}, Project> {
     return (
       <ProjectContext.Provider
         value={{
-          title: this.state.title,
+          project: this.state.project,
           addProject: this.addProject,
           removeProject: this.removeProject,
           addImage: this.addImage,
