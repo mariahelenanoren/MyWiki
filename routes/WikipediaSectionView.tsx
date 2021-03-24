@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { ScrollView, Text } from "react-native";
 import { RouteComponentProps, withRouter } from "react-router-native";
+import { NavigationContext } from "../contexts/NavigationContext";
 import { getWikipediaSection } from "../helper";
 
 interface Props extends RouteComponentProps<{}, {}, Navigation> {}
@@ -12,19 +13,19 @@ interface Navigation {
 }
 
 function WikipediaSection(props: Props) {
+  const navigation = useContext(NavigationContext);
   const [data, setData] = useState();
 
   useEffect(() => {
     const dataResponse = async () => {
       const response = await getWikipediaSection(
-        props.location.state.navigationData.searchTerm,
-        props.location.state.navigationData.section
+        props.location.state.navigationData.section,
+        navigation.wikipediaQuery
       );
       setData(response);
     };
     dataResponse();
   }, []);
-  console.log(data);
   return <ScrollView>{data ? <Text>{data}</Text> : null}</ScrollView>;
 }
 

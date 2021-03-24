@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import NavigationBar from "../components/NavigationBar";
+import { NavigationContext } from "../contexts/NavigationContext";
 import { getWikipediaQuery } from "../helper";
 import { colorPalette, globalStyles } from "../styling";
 
@@ -16,18 +17,18 @@ interface Section {
 export default function WikipediaView() {
   const { url } = useRouteMatch();
   const [data, setData] = useState<Section[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const navigation = useContext(NavigationContext);
 
   useEffect(() => {
     const dataResponse = async () => {
-      const response = await getWikipediaQuery(searchTerm);
+      const response = await getWikipediaQuery(navigation.wikipediaQuery);
       setData(response);
     };
     dataResponse();
-  }, [searchTerm]);
+  }, [navigation.wikipediaQuery]);
 
   function handleChange(value: string) {
-    setSearchTerm(value);
+    navigation.setWikipediaQuery(value);
   }
 
   function formatLevel(number: string) {
@@ -38,10 +39,10 @@ export default function WikipediaView() {
   return (
     <View style={globalStyles.flex}>
       <Input onChange={(value) => handleChange(value)} placeholder="Search" />
-      {searchTerm ? (
+      {navigation.wikipediaQuery ? (
         <>
           <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
-            Search results for: "{searchTerm}"
+            Search results for: "{navigation.wikipediaQuery}"
           </Text>
           <ScrollView>
             {data.length
@@ -54,7 +55,6 @@ export default function WikipediaView() {
                     level={formatLevel(section.number)}
                     navigationData={{
                       section: section.level,
-                      searchTerm: searchTerm,
                     }}
                   />
                 ))

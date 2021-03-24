@@ -1,11 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { unsplashKey } from "./key";
+import { NavigationContext } from "./contexts/NavigationContext";
 import { ProjectItem } from "./contexts/projectContext";
-
-interface Data {
-  id?: string;
-  keyword?: string;
-}
+import { useContext } from "react";
 
 export const getProjects = async () => {
   try {
@@ -44,9 +41,9 @@ export async function getImages(keyword: string, page: number) {
   }
 }
 
-export async function getWikipediaQuery(keyword: string) {
+export async function getWikipediaQuery(query: string) {
   const axios = require("axios").default;
-  const formattedSearchTerm = formatQuery(keyword);
+  const formattedSearchTerm = formatQuery(query);
   try {
     const response = await axios.get(
       `https://en.wikipedia.org/w/api.php?action=parse&format=json&page=${formattedSearchTerm}&prop=sections`
@@ -57,9 +54,9 @@ export async function getWikipediaQuery(keyword: string) {
   }
 }
 
-export async function getWikipediaSection(keyword: string, section: string) {
+export async function getWikipediaSection(section: string, query: string) {
   const axios = require("axios").default;
-  const formattedSearchTerm = formatQuery(keyword);
+  const formattedSearchTerm = formatQuery(query);
   try {
     const response = await axios.get(
       `https://en.wikipedia.org/w/api.php?action=parse&format=json&page=${formattedSearchTerm}&prop=text&section=${section}`
