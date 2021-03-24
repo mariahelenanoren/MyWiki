@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Link, Route, Switch, useRouteMatch } from "react-router-native";
-import ImagesApi from "./ImagesView";
-import WikipediaApi from "./WikipediaView";
-import ProjectInput from "./CreateView";
-import NewsApi from "./NewsView";
+import ImagesView from "./ImagesView";
+import WikipediaView from "./WikipediaView";
+import WikipediaSectionView from "./WikipediaSectionView";
+import ProjectView from "./CreateView";
+import NewsView from "./NewsView";
 import { globalStyles } from "../styling";
 
 export default function CreateViewContainer() {
@@ -13,10 +14,14 @@ export default function CreateViewContainer() {
   return (
     <View style={globalStyles.flex}>
       <Switch>
-        <Route path={url + "/images"} component={ImagesApi} />
-        <Route path={url + "/wikipedia"} component={WikipediaApi} />
-        <Route path={url + "/articles"} component={NewsApi} />
-        <Route exact path={url} component={ProjectInput} />
+        <Route exact path={url} component={ProjectView} />
+        <Route path={url + "/images"} component={ImagesView} />
+        <Route exact path={url + "/wikipedia"} component={WikipediaView} />
+        <Route
+          path={url + "/wikipedia/:section"}
+          component={WikipediaSectionView}
+        />
+        <Route path={url + "/articles"} component={NewsView} />
       </Switch>
     </View>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import NavigationBar from "../components/NavigationBar";
 import { getWikipediaSections } from "../helper";
@@ -8,9 +9,11 @@ import { colorPalette, globalStyles } from "../styling";
 interface Section {
   line: string;
   number: string;
+  anchor: string;
 }
 
 export default function WikipediaView() {
+  const { url } = useRouteMatch();
   const [data, setData] = useState<Section[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -28,7 +31,7 @@ export default function WikipediaView() {
   }, [searchTerm]);
 
   function handleChange(value: string) {
-    setSearchTerm(value);
+    setSearchTerm("Albert Einstein");
   }
 
   function formatLevel(number: string) {
@@ -48,6 +51,7 @@ export default function WikipediaView() {
             {data.length
               ? data.map((object: Section) => (
                   <NavigationBar
+                    path={url + "/" + object.anchor.toLowerCase()}
                     key={object.line}
                     title={object.line}
                     level={formatLevel(object.number)}
