@@ -7,22 +7,21 @@ import { Link } from "react-router-native";
 interface Props {
   title: string;
   path: string;
+  iconPress?: (iconToggle: boolean) => void;
   level?: number;
   icon?: string;
 }
 
 export default function NavigationBar(props: Props) {
-  const [iconState, setIconState] = useState({
-    isSelected: false,
-  });
+  const [iconToggle, setIconSelect] = useState(false);
   const [iconColor, setIconColor] = useState({
     color: colorPalette.secondaryColor,
   });
 
   function toggleIcon() {
-    setIconState({ isSelected: !iconState.isSelected });
+    setIconSelect(!iconToggle);
     {
-      iconState.isSelected
+      iconToggle
         ? setIconColor({ color: colorPalette.secondaryColor })
         : setIconColor({ color: colorPalette.primaryColor });
     }
@@ -41,7 +40,10 @@ export default function NavigationBar(props: Props) {
             <Icon
               name={props.icon}
               style={{ ...styles.buttonIcon, color: iconColor.color }}
-              onPress={toggleIcon}
+              onPress={() => (
+                toggleIcon(),
+                props.iconPress ? props.iconPress(iconToggle) : null
+              )}
             />
           ) : null}
           {props.level ? (

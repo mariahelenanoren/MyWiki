@@ -54,6 +54,7 @@ export default function WikipediaView() {
                     path={url + "/" + object.anchor.toLowerCase()}
                     key={object.line}
                     title={object.line}
+                    icon={"check-box"}
                     level={formatLevel(object.number)}
                   />
                 ))
