@@ -14,6 +14,9 @@ export default function CreateView() {
   const [newsArticles, setNewsArticles] = useState();
   const [project, setProject] = useState<ProjectItem>({
     title: "",
+    images: [],
+    wikipediaArticles: [],
+    newsArticles: [],
   });
   const { url } = useRouteMatch();
 
