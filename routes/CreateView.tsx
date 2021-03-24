@@ -7,7 +7,7 @@ import NavigationBar from "../components/NavigationBar";
 import MainButton from "../components/MainButton";
 
 export default function CreateView() {
-  let { url } = useRouteMatch();
+  const { url } = useRouteMatch();
 
   function onChange(value: string) {}
   function createProject() {}
@@ -38,30 +38,9 @@ export default function CreateView() {
         >
           Add material
         </Text>
-        <Link
-          to={{
-            pathname: url + "/images",
-            state: { title: "Images", navbarType: "defaultNavbar" },
-          }}
-        >
-          <NavigationBar title="Images" />
-        </Link>
-        <Link
-          to={{
-            pathname: url + "/wikipedia",
-            state: { title: "Wikipedia", navbarType: "defaultNavbar" },
-          }}
-        >
-          <NavigationBar title="Wikipedia" />
-        </Link>
-        <Link
-          to={{
-            pathname: url + "/articles",
-            state: { title: "News articles", navbarType: "defaultNavbar" },
-          }}
-        >
-          <NavigationBar title="News articles" />
-        </Link>
+        <NavigationBar path={url + "/images"} title="Images" />
+        <NavigationBar title="Wikipedia" path={url + "/wikipedia"} />
+        <NavigationBar path={url + "/news-articles"} title="News articles" />
       </View>
       <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>
         <MainButton title="Create project" onPress={() => createProject} />

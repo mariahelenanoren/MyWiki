@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { globalStyles, colorPalette } from "../styling";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Link } from "react-router-native";
 
 interface Props {
   title: string;
+  path: string;
   level?: number;
   icon?: string;
 }
@@ -27,33 +29,40 @@ export default function NavigationBar(props: Props) {
   }
 
   return (
-    <View style={styles.buttonContainer}>
-      <View style={styles.titleContainer}>
-        {props.icon ? (
-          <Icon
-            name={props.icon}
-            style={{ ...styles.buttonIcon, color: iconColor.color }}
-            onPress={toggleIcon}
-          />
-        ) : null}
-        {props.level ? (
-          <Text
-            style={{
-              ...globalStyles.text,
-              ...styles.title,
-              marginLeft: props.level * 10,
-            }}
-          >
-            {props.title}
-          </Text>
-        ) : (
-          <Text style={{ ...globalStyles.text, ...styles.title }}>
-            {props.title}
-          </Text>
-        )}
+    <Link
+      to={{
+        pathname: props.path,
+        state: { title: props.title, navbarType: "defaultNavbar" },
+      }}
+    >
+      <View style={styles.buttonContainer}>
+        <View style={styles.titleContainer}>
+          {props.icon ? (
+            <Icon
+              name={props.icon}
+              style={{ ...styles.buttonIcon, color: iconColor.color }}
+              onPress={toggleIcon}
+            />
+          ) : null}
+          {props.level ? (
+            <Text
+              style={{
+                ...globalStyles.text,
+                ...styles.title,
+                marginLeft: props.level * 10,
+              }}
+            >
+              {props.title}
+            </Text>
+          ) : (
+            <Text style={{ ...globalStyles.text, ...styles.title }}>
+              {props.title}
+            </Text>
+          )}
+        </View>
+        <Icon name="arrow-forward-ios" style={styles.navIcon} />
       </View>
-      <Icon name="arrow-forward-ios" style={styles.navIcon} />
-    </View>
+    </Link>
   );
 }
 
