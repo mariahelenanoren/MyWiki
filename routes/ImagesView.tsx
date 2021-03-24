@@ -23,7 +23,6 @@ export default function ImageView() {
     const dataResponse = async () => {
       const response = await getImages(searchTerm, pageCounter);
       setData(response);
-      console.log(response.anchor);
     };
     dataResponse();
   }, [pageCounter, searchTerm]);
@@ -53,12 +52,12 @@ export default function ImageView() {
                 {data.map((image) => (
                   <ImageContainer urls={image.urls} />
                 ))}
-                <MainButton
-                  style={styles.button}
-                  title="Load more images"
-                  onPress={() => loadImages()}
-                />
               </ScrollView>
+              <MainButton
+                style={styles.button}
+                title="Load more images"
+                onPress={() => loadImages()}
+              />
             </>
           ) : null}
         </>
