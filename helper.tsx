@@ -44,7 +44,7 @@ export async function getImages(keyword: string, page: number) {
   }
 }
 
-export async function getWikipediaSections(keyword: string) {
+export async function getWikipediaQuery(keyword: string) {
   const axios = require("axios").default;
   const formattedSearchTerm = formatQuery(keyword);
   try {
@@ -52,6 +52,19 @@ export async function getWikipediaSections(keyword: string) {
       `https://en.wikipedia.org/w/api.php?action=parse&format=json&page=${formattedSearchTerm}&prop=sections`
     );
     return response.data.parse.sections;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function getWikipediaSection(keyword: string, section: string) {
+  const axios = require("axios").default;
+  const formattedSearchTerm = formatQuery(keyword);
+  try {
+    const response = await axios.get(
+      `https://en.wikipedia.org/w/api.php?action=parse&format=json&page=${formattedSearchTerm}&prop=text&section=${section}`
+    );
+    return response.data.parse.text["*"];
   } catch (error) {
     return error;
   }

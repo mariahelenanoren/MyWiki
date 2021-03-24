@@ -3,13 +3,14 @@ import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import NavigationBar from "../components/NavigationBar";
-import { getWikipediaSections } from "../helper";
+import { getWikipediaQuery } from "../helper";
 import { colorPalette, globalStyles } from "../styling";
 
 interface Section {
   line: string;
   number: string;
   anchor: string;
+  level: string;
 }
 
 export default function WikipediaView() {
@@ -19,19 +20,14 @@ export default function WikipediaView() {
 
   useEffect(() => {
     const dataResponse = async () => {
-      const response = await getWikipediaSections(searchTerm);
+      const response = await getWikipediaQuery(searchTerm);
       setData(response);
     };
     dataResponse();
-    if (data.length > 1) {
-      data.map((item) => {
-        console.log(item.number);
-      });
-    }
   }, [searchTerm]);
 
   function handleChange(value: string) {
-    setSearchTerm("Albert Einstein");
+    setSearchTerm(value);
   }
 
   function formatLevel(number: string) {
@@ -49,13 +45,17 @@ export default function WikipediaView() {
           </Text>
           <ScrollView>
             {data.length
-              ? data.map((object: Section) => (
+              ? data.map((section: Section) => (
                   <NavigationBar
-                    path={url + "/" + object.anchor.toLowerCase()}
-                    key={object.line}
-                    title={object.line}
+                    path={url + "/" + section.anchor.toLowerCase()}
+                    key={section.line}
+                    title={section.line}
                     icon={"check-box"}
-                    level={formatLevel(object.number)}
+                    level={formatLevel(section.number)}
+                    navigationData={{
+                      section: section.level,
+                      searchTerm: searchTerm,
+                    }}
                   />
                 ))
               : null}
