@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: "cover",
     marginBottom: 10,
-    borderStyle: "solid",
     borderWidth: 3,
   },
   button: {
