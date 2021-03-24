@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
-import { Link, useRouteMatch } from "react-router-native";
+import { useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import { globalStyles } from "../styling";
 import NavigationBar from "../components/NavigationBar";
 import MainButton from "../components/MainButton";
+import { ProjectItem, WikipediaArticle } from "../contexts/ProjectContext";
 
 export default function CreateView() {
+  const [wikipediaArticles, setWikipediaArticles] = useState<
+    WikipediaArticle[]
+  >();
+  const [newsArticles, setNewsArticles] = useState();
+  const [project, setProject] = useState<ProjectItem>({
+    title: "",
+  });
   const { url } = useRouteMatch();
 
-  function onChange(value: string) {}
+  function onChange(key: string, value: string) {
+    setProject({ ...project, [key]: value });
+  }
+
+  console.log(wikipediaArticles);
+
   function createProject() {}
 
   return (
@@ -17,11 +30,11 @@ export default function CreateView() {
       contentContainerStyle={{ ...styles.mainContainer, ...globalStyles.flex }}
     >
       <Input
-        onChange={(value) => onChange(value)}
+        onChange={(value) => onChange("title", value)}
         placeholder="Project title"
       />
       <Input
-        onChange={(value) => onChange(value)}
+        onChange={(value) => onChange("description", value)}
         placeholder="Project description"
       />
       <Text style={{ ...globalStyles.text, paddingVertical: 12 }}>
@@ -39,7 +52,11 @@ export default function CreateView() {
           Add material
         </Text>
         <NavigationBar path={url + "/images"} title="Images" />
-        <NavigationBar title="Wikipedia" path={url + "/wikipedia"} />
+        <NavigationBar
+          path={url + "/wikipedia"}
+          title="Wikipedia"
+          navigationProps={{ setWikipediaArticles, wikipediaArticles }}
+        />
         <NavigationBar path={url + "/news-articles"} title="News articles" />
       </View>
       <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>

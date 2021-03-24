@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { globalStyles, colorPalette } from "../styling";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -8,25 +8,22 @@ interface Props {
   title: string;
   path: string;
   iconPress?: (iconToggle: boolean) => void;
-  level?: number;
+  level?: string;
   icon?: string;
-  navigationData?: unknown;
+  navigationProps?: unknown;
 }
 
 export default function NavigationBar(props: Props) {
-  const [iconToggle, setIconSelect] = useState(false);
+  const [iconToggle, setIconToggle] = useState(false);
   const [iconColor, setIconColor] = useState({
     color: colorPalette.secondaryColor,
   });
 
-  function toggleIcon() {
-    setIconSelect(!iconToggle);
-    {
-      iconToggle
-        ? setIconColor({ color: colorPalette.secondaryColor })
-        : setIconColor({ color: colorPalette.primaryColor });
-    }
-  }
+  useEffect(() => {
+    iconToggle
+      ? setIconColor({ color: colorPalette.primaryColor })
+      : setIconColor({ color: colorPalette.secondaryColor });
+  }, [iconToggle]);
 
   return (
     <Link
@@ -35,7 +32,7 @@ export default function NavigationBar(props: Props) {
         state: {
           title: props.title,
           navbarType: "defaultNavbar",
-          navigationData: props.navigationData,
+          navigationProps: props.navigationProps,
         },
       }}
     >
@@ -45,7 +42,8 @@ export default function NavigationBar(props: Props) {
             name={props.icon}
             style={{ ...styles.buttonIcon, color: iconColor.color }}
             onPress={() => (
-              toggleIcon(), props.iconPress ? props.iconPress(iconToggle) : null
+              setIconToggle(!iconToggle),
+              props.iconPress ? props.iconPress(iconToggle) : null
             )}
           />
         ) : null}
@@ -54,7 +52,7 @@ export default function NavigationBar(props: Props) {
             <Text
               style={{
                 ...globalStyles.text,
-                marginLeft: props.level * 10,
+                marginLeft: Number(props.level) * 10,
               }}
             >
               {props.title}

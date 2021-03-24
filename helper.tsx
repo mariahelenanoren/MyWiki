@@ -48,7 +48,7 @@ export async function getWikipediaQuery(query: string) {
     const response = await axios.get(
       `https://en.wikipedia.org/w/api.php?action=parse&format=json&page=${formattedSearchTerm}&prop=sections`
     );
-    return response.data.parse.sections;
+    return response.data.parse;
   } catch (error) {
     return error;
   }
