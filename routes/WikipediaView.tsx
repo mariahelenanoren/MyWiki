@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
-import {
-  RouteComponentProps,
-  useRouteMatch,
-  withRouter,
-} from "react-router-native";
+import { useRouteMatch, withRouter } from "react-router-native";
 import Input from "../components/Input";
 import NavigationBar from "../components/NavigationBar";
 import { NavigationContext } from "../contexts/NavigationContext";
 import { getWikipediaQuery } from "../helper";
-import { WikipediaArticle, WikipediaSection } from "../contexts/ProjectContext";
+import { ProjectContext } from "../contexts/ProjectContext";
 import { colorPalette, globalStyles } from "../styling";
 
 interface Data {
@@ -23,23 +19,11 @@ interface Section {
   anchor: string;
   index: string;
 }
-interface Navigation {
-  navigationProps: {
-    setWikipediaArticles: (article: WikipediaArticle[]) => void;
-    wikipediaArticles: WikipediaArticle[];
-  };
-}
 
-interface Props extends RouteComponentProps<{}, {}, Navigation> {}
-
-function WikipediaView(props: Props) {
-  const navigationProps = props.location.state.navigationProps;
+function WikipediaView() {
+  const projectContext = useContext(ProjectContext);
   const { url } = useRouteMatch();
   const [data, setData] = useState<Data>();
-  const [wikipediaArticle, setWikipediaArticle] = useState<WikipediaArticle>({
-    title: "",
-    section: [],
-  });
   const navigation = useContext(NavigationContext);
 
   useEffect(() => {
@@ -61,28 +45,21 @@ function WikipediaView(props: Props) {
 
   function handleSectionToggle(iconToggle: boolean, section: Section) {
     iconToggle
-      ? setWikipediaArticle({
-          title: data!.title,
-          section: [
-            ...wikipediaArticle.section,
-            {
-              title: section.line,
-              level: formatLevel(section.number),
-              number: section.index,
-            },
-          ],
+      ? projectContext.addWikipediaSection(data!.title, {
+          level: formatLevel(section.number),
+          number: section.index,
+          title: section.line,
         })
-      : setWikipediaArticle({
-          ...wikipediaArticle,
-          section: [
-            ...wikipediaArticle.section.filter(
-              (sectionItem) => sectionItem.title !== section.line
-            ),
-          ],
+      : projectContext.removeWikipediaSection(data!.title, {
+          level: formatLevel(section.number),
+          number: section.index,
+          title: section.line,
         });
   }
 
-  console.log(wikipediaArticle);
+  useEffect(() => {
+    console.log(projectContext.project);
+  }, [projectContext.project]);
 
   return (
     <View style={globalStyles.flex}>

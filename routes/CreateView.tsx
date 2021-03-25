@@ -1,30 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
 import { globalStyles } from "../styling";
 import NavigationBar from "../components/NavigationBar";
 import MainButton from "../components/MainButton";
-import { ProjectItem, WikipediaArticle } from "../contexts/ProjectContext";
+import { ProjectContext } from "../contexts/ProjectContext";
 
 export default function CreateView() {
-  const [wikipediaArticles, setWikipediaArticles] = useState<
-    WikipediaArticle[]
-  >();
-  const [newsArticles, setNewsArticles] = useState();
-  const [project, setProject] = useState<ProjectItem>({
-    title: "",
-    images: [],
-    wikipediaArticles: [],
-    newsArticles: [],
-  });
   const { url } = useRouteMatch();
+  const projectContext = useContext(ProjectContext);
 
-  function onChange(key: string, value: string) {
-    setProject({ ...project, [key]: value });
-  }
-
-  console.log(wikipediaArticles);
+  function onChange(key: string, value: string) {}
 
   function createProject() {}
 
@@ -55,11 +42,7 @@ export default function CreateView() {
           Add material
         </Text>
         <NavigationBar path={url + "/images"} title="Images" />
-        <NavigationBar
-          path={url + "/wikipedia"}
-          title="Wikipedia"
-          navigationProps={{ setWikipediaArticles, wikipediaArticles }}
-        />
+        <NavigationBar path={url + "/wikipedia"} title="Wikipedia" />
         <NavigationBar path={url + "/news-articles"} title="News articles" />
       </View>
       <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>

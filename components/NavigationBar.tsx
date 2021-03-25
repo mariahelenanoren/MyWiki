@@ -23,6 +23,8 @@ export default function NavigationBar(props: Props) {
     iconToggle
       ? setIconColor({ color: colorPalette.primaryColor })
       : setIconColor({ color: colorPalette.secondaryColor });
+
+    props.iconPress ? props.iconPress(iconToggle) : null;
   }, [iconToggle]);
 
   return (
@@ -41,10 +43,7 @@ export default function NavigationBar(props: Props) {
           <Icon
             name={props.icon}
             style={{ ...styles.buttonIcon, color: iconColor.color }}
-            onPress={() => (
-              setIconToggle(!iconToggle),
-              props.iconPress ? props.iconPress(iconToggle) : null
-            )}
+            onPress={() => setIconToggle(!iconToggle)}
           />
         ) : null}
         <View style={styles.titleContainer}>

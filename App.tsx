@@ -1,11 +1,14 @@
 import React from "react";
 import Layout from "./routes/Layout";
 import { StyleSheet, SafeAreaView } from "react-native";
+import ProjectProvider from "./contexts/ProjectContext";
 
 export default function App() {
   return (
     <SafeAreaView style={styles.root}>
-      <Layout />
+      <ProjectProvider>
+        <Layout />
+      </ProjectProvider>
     </SafeAreaView>
   );
 }
