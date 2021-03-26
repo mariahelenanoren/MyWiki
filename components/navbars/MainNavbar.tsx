@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { Link, RouteComponentProps, withRouter } from "react-router-native";
+import { Link } from "react-router-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { colorPalette } from "../../styling";
 

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   StyleSheet,
   TouchableHighlight,
   useWindowDimensions,
   Image,
 } from "react-native";
+import { ProjectContext } from "../contexts/ProjectContext";
 import { colorPalette } from "../styling";
 
 interface Props {
@@ -17,25 +18,23 @@ interface ImageSizes {
 
 export default function ImageContainer(props: Props) {
   const windowWidth = useWindowDimensions().width;
+  const projectContext = useContext(ProjectContext);
   const [borderStyle, setBorderStyle] = useState({
     borderColor: colorPalette.borderColor,
   });
   const [selected, setSelected] = useState(false);
 
-  function handlePress() {
-    setSelected(!selected);
-    console.log(selected);
-  }
   useEffect(() => {
     selected
-      ? setBorderStyle({ borderColor: colorPalette.primaryColor })
-      : setBorderStyle({ borderColor: colorPalette.borderColor });
+      ? (setBorderStyle({ borderColor: colorPalette.primaryColor }),
+        projectContext.addImage(props.urls.small))
+      : (setBorderStyle({ borderColor: colorPalette.borderColor }),
+        projectContext.removeImage(props.urls.small));
   }, [selected]);
 
   return (
-    <TouchableHighlight onPress={() => handlePress()}>
+    <TouchableHighlight onPress={() => setSelected(!selected)}>
       <Image
-        key={props.urls.small}
         style={{
           ...styles.image,
           width: windowWidth / 2 - 40,
