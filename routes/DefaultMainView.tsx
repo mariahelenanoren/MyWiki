@@ -1,12 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Link } from "react-router-native";
-import { getProjects } from "../helper";
 import { colorPalette, globalStyles } from "../styling";
 
 export default function DefaultMainView() {
   let data;
-  getProjects()
+  /*   getProjects()
     .then((results) => {
       if (results.length !== 0) {
         data = results;
@@ -16,7 +15,7 @@ export default function DefaultMainView() {
     })
     .catch((error) => {
       console.log(error);
-    });
+    }); */
 
   if (data) {
     return <Text>Projects</Text>;

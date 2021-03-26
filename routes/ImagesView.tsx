@@ -1,10 +1,17 @@
-import React, { useState, useEffect, createRef, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  createRef,
+  useRef,
+  useContext,
+} from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
 import Input from "../components/Input";
 import MainButton from "../components/MainButton";
 import ImageContainer from "../components/Image";
 import { getImages } from "../helper";
 import { colorPalette, globalStyles } from "../styling";
+import { NavigationContext } from "../contexts/NavigationContext";
 
 interface ImageSizes {
   small: string;
@@ -14,18 +21,18 @@ interface ImageUrl {
 }
 
 export default function ImageView() {
+  const { imagesQuery, setImagesQuery } = useContext(NavigationContext);
   const [data, setData] = useState<ImageUrl[]>([]);
   const [pageCounter, setPageCounter] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
   const scrollRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     const dataResponse = async () => {
-      const response = await getImages(searchTerm, pageCounter);
+      const response = await getImages(imagesQuery, pageCounter);
       setData(response);
     };
     dataResponse();
-  }, [pageCounter, searchTerm]);
+  }, [pageCounter, imagesQuery]);
 
   function loadImages() {
     scrollRef.current?.scrollTo({
@@ -37,11 +44,11 @@ export default function ImageView() {
 
   return (
     <View style={globalStyles.flex}>
-      <Input placeholder="Search" onChange={(value) => setSearchTerm(value)} />
-      {searchTerm ? (
+      <Input placeholder="Search" onChange={(value) => setImagesQuery(value)} />
+      {imagesQuery ? (
         <>
           <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
-            Search results for: "{searchTerm}"
+            Search results for: "{imagesQuery}"
           </Text>
           {data.length ? (
             <>
@@ -50,7 +57,10 @@ export default function ImageView() {
                 contentContainerStyle={styles.imageContainer}
               >
                 {data.map((image) => (
-                  <ImageContainer key={image.urls.small} urls={image.urls} />
+                  <ImageContainer
+                    key={image.urls.small}
+                    url={image.urls.small}
+                  />
                 ))}
               </ScrollView>
               <MainButton

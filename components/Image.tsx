@@ -9,27 +9,31 @@ import { ProjectContext } from "../contexts/ProjectContext";
 import { colorPalette } from "../styling";
 
 interface Props {
-  urls: ImageSizes[];
-}
-
-interface ImageSizes {
-  small: string;
+  url: string;
 }
 
 export default function ImageContainer(props: Props) {
   const windowWidth = useWindowDimensions().width;
-  const projectContext = useContext(ProjectContext);
+  const { addImage, removeImage, project } = useContext(ProjectContext);
   const [borderStyle, setBorderStyle] = useState({
     borderColor: colorPalette.borderColor,
   });
   const [selected, setSelected] = useState(false);
 
   useEffect(() => {
+    project.images.forEach((url) => {
+      if (url === props.url) {
+        setSelected(true);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     selected
       ? (setBorderStyle({ borderColor: colorPalette.primaryColor }),
-        projectContext.addImage(props.urls.small))
+        addImage(props.url))
       : (setBorderStyle({ borderColor: colorPalette.borderColor }),
-        projectContext.removeImage(props.urls.small));
+        removeImage(props.url));
   }, [selected]);
 
   return (
@@ -40,7 +44,7 @@ export default function ImageContainer(props: Props) {
           width: windowWidth / 2 - 40,
           ...borderStyle,
         }}
-        source={{ uri: props.urls.small }}
+        source={{ uri: props.url }}
       ></Image>
     </TouchableHighlight>
   );

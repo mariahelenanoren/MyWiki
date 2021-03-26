@@ -11,10 +11,11 @@ interface Props {
   level?: string;
   icon?: string;
   navigationProps?: unknown;
+  isSelected?: boolean;
 }
 
 export default function NavigationBar(props: Props) {
-  const [iconToggle, setIconToggle] = useState(false);
+  const [iconToggle, setIconToggle] = useState(props.isSelected || false);
   const [iconColor, setIconColor] = useState({
     color: colorPalette.secondaryColor,
   });

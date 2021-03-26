@@ -4,11 +4,11 @@ import { NavigationContext } from "./contexts/NavigationContext";
 import { ProjectItem } from "./contexts/ProjectContext";
 import { useContext } from "react";
 
-export const getProjects = async () => {
+export const getProject = async () => {
   try {
-    const projects = (await AsyncStorage.getItem("projects")) || "[]";
-    const parsedProjects: ProjectItem[] | [] = JSON.parse(projects);
-    return parsedProjects;
+    const project = (await AsyncStorage.getItem("project")) || "{}";
+    const parsedProject: ProjectItem | [] = JSON.parse(project);
+    return parsedProject;
   } catch (error) {
     console.log(error);
     return [];
@@ -17,12 +17,7 @@ export const getProjects = async () => {
 
 export const saveProject = async (project: ProjectItem) => {
   try {
-    const projects = (await AsyncStorage.getItem("projects")) || "[]";
-    const parsedProjects = JSON.parse(projects);
-    await AsyncStorage.setItem(
-      "projects",
-      JSON.stringify(parsedProjects.append(project))
-    );
+    await AsyncStorage.setItem("project", JSON.stringify(project));
   } catch (error) {
     console.log(error);
   }

@@ -5,7 +5,7 @@ import Input from "../components/Input";
 import NavigationBar from "../components/NavigationBar";
 import { NavigationContext } from "../contexts/NavigationContext";
 import { getWikipediaQuery } from "../helper";
-import { ProjectContext } from "../contexts/ProjectContext";
+import { ProjectContext, WikipediaArticle } from "../contexts/ProjectContext";
 import { colorPalette, globalStyles } from "../styling";
 
 interface Data {
@@ -14,14 +14,17 @@ interface Data {
 }
 
 interface Section {
+  anchor: string;
+  fromtitle: string;
   line: string;
   number: string;
-  anchor: string;
   index: string;
 }
 
 function WikipediaView() {
-  const projectContext = useContext(ProjectContext);
+  const { addWikipediaSection, removeWikipediaSection, project } = useContext(
+    ProjectContext
+  );
   const { url } = useRouteMatch();
   const [data, setData] = useState<Data>();
   const navigation = useContext(NavigationContext);
@@ -45,21 +48,27 @@ function WikipediaView() {
 
   function handleSectionToggle(iconToggle: boolean, section: Section) {
     iconToggle
-      ? projectContext.addWikipediaSection(data!.title, {
+      ? addWikipediaSection(data!.title, {
           level: formatLevel(section.number),
           number: section.index,
           title: section.line,
         })
-      : projectContext.removeWikipediaSection(data!.title, {
+      : removeWikipediaSection(data!.title, {
           level: formatLevel(section.number),
           number: section.index,
           title: section.line,
         });
   }
 
-  useEffect(() => {
-    console.log(projectContext.project);
-  }, [projectContext.project]);
+  const checkIfSelected = (wikipediaSection: Section) => {
+    let selected;
+    project.wikipediaArticles.forEach((article) => {
+      selected = article.sections.find(
+        (section) => section.title === wikipediaSection.line
+      );
+    });
+    return selected;
+  };
 
   return (
     <View style={globalStyles.flex}>
@@ -78,6 +87,7 @@ function WikipediaView() {
                     iconPress={(iconToggle) =>
                       handleSectionToggle(iconToggle, section)
                     }
+                    isSelected={checkIfSelected(section)}
                     title={section.line}
                     icon={"check-box"}
                     level={formatLevel(section.number)}
