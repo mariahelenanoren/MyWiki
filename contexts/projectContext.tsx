@@ -1,5 +1,6 @@
 import React, { Component, createContext } from "react";
 interface ContextState extends ProjectState {
+  setProjectInformation: (title: string, description?: string) => void;
   addImage: (imageUrl: string) => void;
   addWikipediaSection: (
     title: string,
@@ -14,7 +15,6 @@ interface ContextState extends ProjectState {
   removeNewsArticle: (newsArticle: NewsArticle) => void;
 }
 interface ProjectState {
-  projects: ProjectItem[];
   project: ProjectItem;
 }
 export interface ProjectItem {
@@ -44,8 +44,8 @@ interface NewsArticle {
 }
 
 export const ProjectContext = createContext<ContextState>({
-  projects: [],
   project: { title: "", images: [], wikipediaArticles: [], newsArticles: [] },
+  setProjectInformation: () => {},
   addImage: () => {},
   addWikipediaSection: () => {},
   addNewsArticle: () => {},
@@ -56,13 +56,26 @@ export const ProjectContext = createContext<ContextState>({
 
 export default class ProjectProvider extends Component<{}, ProjectState> {
   state: ProjectState = {
-    projects: [],
     project: {
       title: "",
       images: [],
       wikipediaArticles: [],
       newsArticles: [],
     },
+  };
+
+  setProjectInformation = (
+    projectTitle: string,
+    projectDescription?: string
+  ) => {
+    this.setState({
+      ...this.state,
+      project: {
+        ...this.state.project,
+        title: projectTitle,
+        description: projectDescription,
+      },
+    });
   };
 
   addImage = (imageUrl: string) => {
@@ -146,7 +159,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
 
     if (changedArticle) {
       if (changedArticle.sections.length === 1) {
-        console.log("yes");
         this.setState({
           ...this.state,
           project: {
@@ -198,8 +210,8 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
     return (
       <ProjectContext.Provider
         value={{
-          projects: this.state.projects,
           project: this.state.project,
+          setProjectInformation: this.setProjectInformation,
           addImage: this.addImage,
           addWikipediaSection: this.addWikipediaSection,
           addNewsArticle: this.addNewsArticle,
