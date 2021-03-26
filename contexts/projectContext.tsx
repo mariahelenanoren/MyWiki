@@ -1,6 +1,6 @@
 import React, { Component, createContext } from "react";
 interface ContextState extends ProjectState {
-  setProjectInformation: (title: string, description?: string) => void;
+  setProjectInformation: (key: string, value: string) => void;
   addImage: (imageUrl: string) => void;
   addWikipediaSection: (
     title: string,
@@ -64,16 +64,12 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
     },
   };
 
-  setProjectInformation = (
-    projectTitle: string,
-    projectDescription?: string
-  ) => {
+  setProjectInformation = (key: string, value: string) => {
     this.setState({
       ...this.state,
       project: {
         ...this.state.project,
-        title: projectTitle,
-        description: projectDescription,
+        [key]: value,
       },
     });
   };

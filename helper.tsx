@@ -1,14 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { unsplashKey } from "./key";
-import { NavigationContext } from "./contexts/NavigationContext";
 import { ProjectItem } from "./contexts/ProjectContext";
-import { useContext } from "react";
 
-export const getProject = async () => {
+export const getProjects = async () => {
   try {
-    const project = (await AsyncStorage.getItem("project")) || "{}";
-    const parsedProject: ProjectItem | [] = JSON.parse(project);
-    return parsedProject;
+    const projects = (await AsyncStorage.getItem("projects")) || "[]";
+    const parsedProjects: ProjectItem[] | [] = JSON.parse(projects);
+    return parsedProjects;
   } catch (error) {
     console.log(error);
     return [];
@@ -17,7 +15,12 @@ export const getProject = async () => {
 
 export const saveProject = async (project: ProjectItem) => {
   try {
-    await AsyncStorage.setItem("project", JSON.stringify(project));
+    const projects = (await AsyncStorage.getItem("projects")) || "[]";
+    const parsedProjects = JSON.parse(projects);
+    await AsyncStorage.setItem(
+      "projects",
+      JSON.stringify(parsedProjects.append(project))
+    );
   } catch (error) {
     console.log(error);
   }

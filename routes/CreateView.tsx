@@ -6,25 +6,23 @@ import { globalStyles } from "../styling";
 import NavigationBar from "../components/NavigationBar";
 import MainButton from "../components/MainButton";
 import { ProjectContext } from "../contexts/ProjectContext";
+import { ProjectListContext } from "../contexts/ProjectListContext";
 
 export default function CreateView() {
   const { url } = useRouteMatch();
-  const projectContext = useContext(ProjectContext);
-
-  function onChange(key: string, value: string) {}
-
-  function createProject() {}
+  const { project, setProjectInformation } = useContext(ProjectContext);
+  const { addProject } = useContext(ProjectListContext);
 
   return (
     <ScrollView
       contentContainerStyle={{ ...styles.mainContainer, ...globalStyles.flex }}
     >
       <Input
-        onChange={(value) => onChange("title", value)}
+        onChange={(value) => setProjectInformation("title", value)}
         placeholder="Project title"
       />
       <Input
-        onChange={(value) => onChange("description", value)}
+        onChange={(value) => setProjectInformation("description", value)}
         placeholder="Project description"
       />
       <Text style={{ ...globalStyles.text, paddingVertical: 12 }}>
@@ -46,7 +44,10 @@ export default function CreateView() {
         <NavigationBar path={url + "/news-articles"} title="News articles" />
       </View>
       <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>
-        <MainButton title="Create project" onPress={() => createProject} />
+        <MainButton
+          title="Create project"
+          onPress={() => addProject(project)}
+        />
       </View>
     </ScrollView>
   );
