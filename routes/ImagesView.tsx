@@ -50,7 +50,7 @@ export default function ImageView() {
                 contentContainerStyle={styles.imageContainer}
               >
                 {data.map((image) => (
-                  <ImageContainer urls={image.urls} />
+                  <ImageContainer key={image.urls.small} urls={image.urls} />
                 ))}
               </ScrollView>
               <MainButton

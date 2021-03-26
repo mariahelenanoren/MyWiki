@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { unsplashKey } from "./key";
 import { NavigationContext } from "./contexts/NavigationContext";
-import { ProjectItem } from "./contexts/projectContext";
+import { ProjectItem } from "./contexts/ProjectContext";
 import { useContext } from "react";
 
 export const getProjects = async () => {
