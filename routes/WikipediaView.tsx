@@ -46,7 +46,7 @@ function WikipediaView() {
     return String(level);
   }
 
-  function handleSectionToggle(iconToggle: boolean, section: Section) {
+  const handleSectionToggle = (iconToggle: boolean, section: Section) => {
     iconToggle
       ? addWikipediaSection(data!.title, {
           level: formatLevel(section.number),
@@ -58,7 +58,7 @@ function WikipediaView() {
           number: section.index,
           title: section.line,
         });
-  }
+  };
 
   const checkIfSelected = (wikipediaSection: Section) => {
     let selected;
@@ -93,6 +93,7 @@ function WikipediaView() {
                     level={formatLevel(section.number)}
                     navigationProps={{
                       section: section.index,
+                      type: "search",
                     }}
                   />
                 ))

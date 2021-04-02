@@ -87,6 +87,8 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
   };
 
   addImage = (imageUrl: string, title: string) => {
+    console.log(2);
+
     const changedSection = this.state.project.imageSections.find(
       (section) => section.title === title
     );
@@ -98,7 +100,10 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
             project: {
               ...this.state.project,
               imageSections: [
-                { ...section, urls: [...section.urls, imageUrl] },
+                ...this.state.project.imageSections.filter(
+                  (section) => section.title !== changedSection.title
+                ),
+                { ...changedSection, urls: [...changedSection.urls, imageUrl] },
               ],
             },
           });
@@ -163,6 +168,7 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
   };
 
   removeImage = (imageUrl: string, title: string) => {
+    console.log(1);
     const changedSection = this.state.project.imageSections.find(
       (section) => section.title === title
     );

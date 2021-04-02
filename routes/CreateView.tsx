@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { useRouteMatch } from "react-router-native";
 import Input from "../components/Input";
@@ -10,8 +10,16 @@ import { ProjectListContext } from "../contexts/ProjectListContext";
 
 export default function CreateView() {
   const { url } = useRouteMatch();
-  const { project, setProjectInformation } = useContext(ProjectContext);
+  const { project, setProjectInformation, removeImageSection } = useContext(
+    ProjectContext
+  );
   const { addProject } = useContext(ProjectListContext);
+
+  console.log(project);
+
+  const handlePress = (iconToggle: boolean, title: string) => {
+    iconToggle ? null : removeImageSection(title);
+  };
 
   return (
     <ScrollView
@@ -39,9 +47,32 @@ export default function CreateView() {
         >
           Add material
         </Text>
-        <NavigationBar path={url + "/images"} title="Images" />
-        <NavigationBar path={url + "/wikipedia"} title="Wikipedia" />
-        <NavigationBar path={url + "/news-articles"} title="News articles" />
+        <NavigationBar
+          path={url + "/images"}
+          title="Images"
+          navigationProps={{ type: "search" }}
+        />
+        {project.imageSections.map((section) => (
+          <NavigationBar
+            key={section.title}
+            title={section.title}
+            path={url + "/images"}
+            navigationProps={{ type: "view" }}
+            icon={"check-box"}
+            isSelected={true}
+            iconPress={(iconToggle) => handlePress(iconToggle, section.title)}
+          />
+        ))}
+        <NavigationBar
+          path={url + "/wikipedia"}
+          title="Wikipedia"
+          navigationProps={{ type: "search" }}
+        />
+        <NavigationBar
+          path={url + "/news-articles"}
+          title="News articles"
+          navigationProps={{ type: "search" }}
+        />
       </View>
       <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>
         <MainButton

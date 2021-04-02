@@ -10,34 +10,41 @@ import { colorPalette } from "../styling";
 
 interface Props {
   url: string;
+  searchTerm: string;
+  onPress: (selected: boolean) => void;
 }
 
 export default function ImageContainer(props: Props) {
   const windowWidth = useWindowDimensions().width;
-  const { addImage, removeImage, project } = useContext(ProjectContext);
+  const { project } = useContext(ProjectContext);
   const [borderStyle, setBorderStyle] = useState({
     borderColor: colorPalette.borderColor,
   });
   const [selected, setSelected] = useState(false);
 
   useEffect(() => {
-    project.images.forEach((url) => {
-      if (url === props.url) {
-        setSelected(true);
-      }
+    project.imageSections.forEach((section) => {
+      section.urls.forEach((url) => {
+        if (url === props.url) {
+          setSelected(true);
+        }
+      });
     });
   }, []);
 
+  const handlePress = () => {
+    setSelected(!selected);
+    props.onPress(!selected);
+  };
+
   useEffect(() => {
     selected
-      ? (setBorderStyle({ borderColor: colorPalette.primaryColor }),
-        addImage(props.url))
-      : (setBorderStyle({ borderColor: colorPalette.borderColor }),
-        removeImage(props.url));
+      ? setBorderStyle({ borderColor: colorPalette.primaryColor })
+      : setBorderStyle({ borderColor: colorPalette.borderColor });
   }, [selected]);
 
   return (
-    <TouchableHighlight onPress={() => setSelected(!selected)}>
+    <TouchableHighlight onPress={() => handlePress()}>
       <Image
         style={{
           ...styles.image,

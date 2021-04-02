@@ -7,21 +7,10 @@ import { colorPalette, globalStyles } from "../styling";
 
 export default function DefaultMainView() {
   const { projects } = useContext(ProjectListContext);
-  /*   getProjects()
-    .then((results) => {
-      if (results.length !== 0) {
-        data = results;
-      } else {
-        data = null;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    }); */
 
   return (
     <View>
-      {projects ? (
+      {projects.length ? (
         projects.map((project, index) => (
           <ProjectCard key={index} title={project.title} />
         ))
@@ -55,7 +44,7 @@ export default function DefaultMainView() {
 const styles = StyleSheet.create({
   defaultView: {
     display: "flex",
-    flex: 1,
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "white",

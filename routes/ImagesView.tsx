@@ -1,18 +1,20 @@
-import React, {
-  useState,
-  useEffect,
-  createRef,
-  useRef,
-  useContext,
-} from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
 import Input from "../components/Input";
-import MainButton from "../components/MainButton";
-import ImageContainer from "../components/Image";
+import ImageContainer from "../components/ImageContainer";
 import { getImages } from "../helper";
 import { colorPalette, globalStyles } from "../styling";
 import { NavigationContext } from "../contexts/NavigationContext";
+import { RouteComponentProps, withRouter } from "react-router";
+import { ProjectContext } from "../contexts/ProjectContext";
+import MainButton from "../components/MainButton";
 
+interface Navigation {
+  title: string;
+  navigationProps: {
+    type: "search" | "view";
+  };
+}
 interface ImageSizes {
   small: string;
 }
@@ -20,8 +22,11 @@ interface ImageUrl {
   urls: ImageSizes[];
 }
 
-export default function ImageView() {
+interface Props extends RouteComponentProps<{}, {}, Navigation> {}
+
+function ImagesView(props: Props) {
   const { imagesQuery, setImagesQuery } = useContext(NavigationContext);
+  const { project, addImage, removeImage } = useContext(ProjectContext);
   const [data, setData] = useState<ImageUrl[]>([]);
   const [pageCounter, setPageCounter] = useState(1);
   const scrollRef = useRef<ScrollView | null>(null);
@@ -34,32 +39,46 @@ export default function ImageView() {
     dataResponse();
   }, [pageCounter, imagesQuery]);
 
-  function loadImages() {
+  const loadImages = () => {
     scrollRef.current?.scrollTo({
       y: 0,
       animated: true,
     });
     setPageCounter(pageCounter + 1);
-  }
+  };
+
+  const handlePress = (selected: boolean, url: string) => {
+    console.log(selected);
+    selected
+      ? addImage(url, props.location.state.title)
+      : removeImage(url, props.location.state.title);
+  };
 
   return (
     <View style={globalStyles.flex}>
-      <Input placeholder="Search" onChange={(value) => setImagesQuery(value)} />
-      {imagesQuery ? (
+      {props.location.state.navigationProps.type === "search" ? (
         <>
-          <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
-            Search results for: "{imagesQuery}"
-          </Text>
-          {data.length ? (
+          <Input
+            placeholder="Search"
+            onChange={(value) => setImagesQuery(value)}
+          />
+          {imagesQuery ? (
             <>
+              <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
+                Search results for: "{imagesQuery}"
+              </Text>
               <ScrollView
                 ref={scrollRef}
                 contentContainerStyle={styles.imageContainer}
               >
                 {data.map((image) => (
                   <ImageContainer
+                    onPress={(selected) =>
+                      handlePress(selected, image.urls.small)
+                    }
                     key={image.urls.small}
                     url={image.urls.small}
+                    searchTerm={imagesQuery}
                   />
                 ))}
               </ScrollView>
@@ -69,14 +88,30 @@ export default function ImageView() {
                 onPress={() => loadImages()}
               />
             </>
-          ) : null}
+          ) : (
+            <View style={{ ...styles.defaultContainer, ...globalStyles.flex }}>
+              <Text style={{ ...globalStyles.text, ...styles.defaultText }}>
+                Please enter a search term to view images
+              </Text>
+            </View>
+          )}
         </>
       ) : (
-        <View style={{ ...styles.defaultContainer, ...globalStyles.flex }}>
-          <Text style={{ ...globalStyles.text, ...styles.defaultText }}>
-            Please enter a search term to view images
-          </Text>
-        </View>
+        <ScrollView
+          ref={scrollRef}
+          contentContainerStyle={styles.imageContainer}
+        >
+          {project.imageSections.map((section) =>
+            section.urls.map((url, index) => (
+              <ImageContainer
+                onPress={(selected) => handlePress(selected, url)}
+                url={url}
+                key={index}
+                searchTerm={props.location.state.title}
+              />
+            ))
+          )}
+        </ScrollView>
       )}
     </View>
   );
@@ -115,3 +150,5 @@ const styles = StyleSheet.create({
     maxWidth: 220,
   },
 });
+
+export default withRouter(ImagesView);
