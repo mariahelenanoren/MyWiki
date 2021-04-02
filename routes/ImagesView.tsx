@@ -49,9 +49,15 @@ function ImagesView(props: Props) {
 
   const handlePress = (selected: boolean, url: string) => {
     console.log(selected);
-    selected
-      ? addImage(url, props.location.state.title)
-      : removeImage(url, props.location.state.title);
+    selected ? addImage(url, imagesQuery) : removeImage(url, imagesQuery);
+  };
+
+  const checkIfSelected = (imageUrl: string) => {
+    let selected;
+    project.imageSections.forEach((section) => {
+      selected = section.urls.find((url) => url === imageUrl);
+    });
+    return selected;
   };
 
   return (
@@ -76,6 +82,7 @@ function ImagesView(props: Props) {
                     onPress={(selected) =>
                       handlePress(selected, image.urls.small)
                     }
+                    isSelected={checkIfSelected(image.urls.small)}
                     key={image.urls.small}
                     url={image.urls.small}
                     searchTerm={imagesQuery}
@@ -102,11 +109,12 @@ function ImagesView(props: Props) {
           contentContainerStyle={styles.imageContainer}
         >
           {project.imageSections.map((section) =>
-            section.urls.map((url, index) => (
+            section.urls.map((url) => (
               <ImageContainer
+                isSelected={checkIfSelected(url)}
                 onPress={(selected) => handlePress(selected, url)}
                 url={url}
-                key={index}
+                key={url}
                 searchTerm={props.location.state.title}
               />
             ))

@@ -12,6 +12,7 @@ interface Props {
   url: string;
   searchTerm: string;
   onPress: (selected: boolean) => void;
+  isSelected?: boolean;
 }
 
 export default function ImageContainer(props: Props) {
@@ -20,17 +21,7 @@ export default function ImageContainer(props: Props) {
   const [borderStyle, setBorderStyle] = useState({
     borderColor: colorPalette.borderColor,
   });
-  const [selected, setSelected] = useState(false);
-
-  useEffect(() => {
-    project.imageSections.forEach((section) => {
-      section.urls.forEach((url) => {
-        if (url === props.url) {
-          setSelected(true);
-        }
-      });
-    });
-  }, []);
+  const [selected, setSelected] = useState(props.isSelected || false);
 
   const handlePress = () => {
     setSelected(!selected);

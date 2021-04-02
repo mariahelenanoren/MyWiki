@@ -87,8 +87,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
   };
 
   addImage = (imageUrl: string, title: string) => {
-    console.log(2);
-
     const changedSection = this.state.project.imageSections.find(
       (section) => section.title === title
     );
@@ -133,6 +131,9 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
             project: {
               ...this.state.project,
               wikipediaArticles: [
+                ...this.state.project.wikipediaArticles.filter(
+                  (article) => article.title !== changedArticle.title
+                ),
                 {
                   ...article,
                   sections: [...article.sections, section],

@@ -68,6 +68,17 @@ export default function CreateView() {
           title="Wikipedia"
           navigationProps={{ type: "search" }}
         />
+        {project.wikipediaArticles.map((article) => (
+          <NavigationBar
+            key={article.title}
+            title={article.title}
+            path={url + "/wikipedia"}
+            navigationProps={{ type: "view" }}
+            icon={"check-box"}
+            isSelected={true}
+            iconPress={(iconToggle) => handlePress(iconToggle, article.title)}
+          />
+        ))}
         <NavigationBar
           path={url + "/news-articles"}
           title="News articles"
