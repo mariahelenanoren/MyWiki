@@ -1,13 +1,14 @@
 import React, { Component, createContext } from "react";
 interface ContextState extends ProjectState {
   setProjectInformation: (key: string, value: string) => void;
-  addImage: (imageUrl: string) => void;
+  addImage: (imageUrl: string, title: string) => void;
   addWikipediaSection: (
     title: string,
     wikipediaSection: WikipediaSection
   ) => void;
   addNewsArticle: (newsArticle: NewsArticle) => void;
-  removeImage: (imageUrl: string) => void;
+  removeImage: (imageUrl: string, title: string) => void;
+  removeImageSection: (titel: string) => void;
   removeWikipediaSection: (
     title: string,
     wikipediaSection: WikipediaSection
@@ -20,9 +21,14 @@ interface ProjectState {
 export interface ProjectItem {
   title: string;
   description?: string;
-  images: string[];
+  imageSections: ImageSection[];
   wikipediaArticles: WikipediaArticle[];
   newsArticles: NewsArticle[];
+}
+
+interface ImageSection {
+  title: string;
+  urls: string[];
 }
 export interface WikipediaArticle {
   title: string;
@@ -44,12 +50,18 @@ interface NewsArticle {
 }
 
 export const ProjectContext = createContext<ContextState>({
-  project: { title: "", images: [], wikipediaArticles: [], newsArticles: [] },
+  project: {
+    title: "",
+    imageSections: [],
+    wikipediaArticles: [],
+    newsArticles: [],
+  },
   setProjectInformation: () => {},
   addImage: () => {},
   addWikipediaSection: () => {},
   addNewsArticle: () => {},
   removeImage: () => {},
+  removeImageSection: () => {},
   removeWikipediaSection: () => {},
   removeNewsArticle: () => {},
 });
@@ -58,7 +70,7 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
   state: ProjectState = {
     project: {
       title: "",
-      images: [],
+      imageSections: [],
       wikipediaArticles: [],
       newsArticles: [],
     },
@@ -74,14 +86,35 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
     });
   };
 
-  addImage = (imageUrl: string) => {
-    this.setState({
-      ...this.state,
-      project: {
-        ...this.state.project,
-        images: [...this.state.project.images, imageUrl],
-      },
-    });
+  addImage = (imageUrl: string, title: string) => {
+    const changedSection = this.state.project.imageSections.find(
+      (section) => section.title === title
+    );
+
+    if (changedSection) {
+      this.state.project.imageSections.map((section) => {
+        if (section.title === changedSection.title) {
+          this.setState({
+            project: {
+              ...this.state.project,
+              imageSections: [
+                { ...section, urls: [...section.urls, imageUrl] },
+              ],
+            },
+          });
+        }
+      });
+    } else {
+      this.setState({
+        project: {
+          ...this.state.project,
+          imageSections: [
+            ...this.state.project.imageSections,
+            { title: title, urls: [imageUrl] },
+          ],
+        },
+      });
+    }
   };
 
   addWikipediaSection = (title: string, section: WikipediaSection) => {
@@ -92,7 +125,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
       this.state.project.wikipediaArticles.map((article: WikipediaArticle) => {
         if (article === changedArticle) {
           this.setState({
-            ...this.state,
             project: {
               ...this.state.project,
               wikipediaArticles: [
@@ -107,7 +139,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
       });
     } else {
       this.setState({
-        ...this.state,
         project: {
           ...this.state.project,
           wikipediaArticles: [
@@ -124,7 +155,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
 
   addNewsArticle = (newsArticle: NewsArticle) => {
     this.setState({
-      ...this.state,
       project: {
         ...this.state.project,
         newsArticles: [...this.state.project.newsArticles, newsArticle],
@@ -132,15 +162,51 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
     });
   };
 
-  removeImage = (imageUrl: string) => {
-    const filteredImages = this.state.project.images.filter(
-      (image) => image !== imageUrl
+  removeImage = (imageUrl: string, title: string) => {
+    const changedSection = this.state.project.imageSections.find(
+      (section) => section.title === title
+    );
+
+    if (changedSection) {
+      if (changedSection.urls.length === 1) {
+        const filteredSections = this.state.project.imageSections.filter(
+          (section) => section.title !== changedSection.title
+        );
+        this.setState({
+          project: {
+            ...this.state.project,
+            imageSections: [...filteredSections],
+          },
+        });
+      } else {
+        this.state.project.imageSections.map((section) => {
+          this.setState({
+            project: {
+              ...this.state.project,
+              imageSections: [
+                {
+                  ...changedSection,
+                  urls: [
+                    ...changedSection.urls.filter((url) => url !== imageUrl),
+                  ],
+                },
+              ],
+            },
+          });
+        });
+      }
+    }
+  };
+
+  removeImageSection = (title: string) => {
+    console.log("yes");
+    const filteredSections = this.state.project.imageSections.filter(
+      (section) => section.title !== title
     );
     this.setState({
-      ...this.state,
       project: {
         ...this.state.project,
-        images: [...filteredImages],
+        imageSections: [...filteredSections],
       },
     });
   };
@@ -155,8 +221,8 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
 
     if (changedArticle) {
       if (changedArticle.sections.length === 1) {
+        /* Removes article which the section belongs to */
         this.setState({
-          ...this.state,
           project: {
             ...this.state.project,
             wikipediaArticles: [
@@ -167,9 +233,9 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
           },
         });
       } else {
+        /* Removes section from article */
         this.state.project.wikipediaArticles.map((article) => {
           this.setState({
-            ...this.state,
             project: {
               ...this.state.project,
               wikipediaArticles: [
@@ -194,7 +260,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
       (article) => article !== newsArticle
     );
     this.setState({
-      ...this.state,
       project: {
         ...this.state.project,
         newsArticles: [...filteredArticles],
@@ -212,6 +277,7 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
           addWikipediaSection: this.addWikipediaSection,
           addNewsArticle: this.addNewsArticle,
           removeImage: this.removeImage,
+          removeImageSection: this.removeImageSection,
           removeWikipediaSection: this.removeWikipediaSection,
           removeNewsArticle: this.removeNewsArticle,
         }}

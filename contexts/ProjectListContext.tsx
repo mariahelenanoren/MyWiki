@@ -1,4 +1,5 @@
 import React, { Component, createContext } from "react";
+import { getProjects } from "../helper";
 import { ProjectItem } from "./ProjectContext";
 
 interface ContextState extends ProjectListState {
@@ -20,6 +21,14 @@ export default class ContextProvider extends Component<{}, ProjectListState> {
   state: ProjectListState = {
     projects: [],
   };
+
+  componentDidMount() {
+    getProjects().then((result) => {
+      this.setState({
+        projects: [...result],
+      });
+    });
+  }
 
   addProject = (project: ProjectItem) => {
     this.setState({ projects: [...this.state.projects, project] });
