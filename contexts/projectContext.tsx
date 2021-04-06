@@ -120,23 +120,27 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
     }
   };
 
-  addWikipediaSection = (title: string, section: WikipediaSection) => {
+  addWikipediaSection = (
+    articleTitle: string,
+    wikipediaSection: WikipediaSection
+  ) => {
     const changedArticle = this.state.project.wikipediaArticles.find(
-      (article) => article.title === title
+      (article) => article.title === articleTitle
     );
+
     if (changedArticle) {
-      this.state.project.wikipediaArticles.map((article: WikipediaArticle) => {
-        if (article === changedArticle) {
+      this.state.project.wikipediaArticles.forEach((article) => {
+        if (article.title === changedArticle.title) {
           this.setState({
             project: {
               ...this.state.project,
               wikipediaArticles: [
                 ...this.state.project.wikipediaArticles.filter(
-                  (article) => article.title !== changedArticle.title
+                  (article) => article.title !== articleTitle
                 ),
                 {
-                  ...article,
-                  sections: [...article.sections, section],
+                  ...changedArticle,
+                  sections: [...changedArticle.sections, wikipediaSection],
                 },
               ],
             },
@@ -149,10 +153,7 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
           ...this.state.project,
           wikipediaArticles: [
             ...this.state.project.wikipediaArticles,
-            {
-              title: title,
-              sections: [section],
-            },
+            { title: articleTitle, sections: [{ ...wikipediaSection }] },
           ],
         },
       });
@@ -169,7 +170,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
   };
 
   removeImage = (imageUrl: string, title: string) => {
-    console.log(1);
     const changedSection = this.state.project.imageSections.find(
       (section) => section.title === title
     );
@@ -206,7 +206,6 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
   };
 
   removeImageSection = (title: string) => {
-    console.log("yes");
     const filteredSections = this.state.project.imageSections.filter(
       (section) => section.title !== title
     );

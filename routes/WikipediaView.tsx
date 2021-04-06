@@ -1,112 +1,68 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
-import { useRouteMatch, withRouter } from "react-router-native";
+import {
+  RouteComponentProps,
+  useRouteMatch,
+  withRouter,
+} from "react-router-native";
 import Input from "../components/Input";
 import NavigationBar from "../components/NavigationBar";
 import { NavigationContext } from "../contexts/NavigationContext";
 import { getWikipediaQuery } from "../helper";
-import { ProjectContext, WikipediaArticle } from "../contexts/ProjectContext";
+import {
+  ProjectContext,
+  WikipediaArticle,
+  WikipediaSection,
+} from "../contexts/ProjectContext";
 import { colorPalette, globalStyles } from "../styling";
 
-interface Data {
+interface Navigation {
   title: string;
-  sections: Section[];
 }
 
-interface Section {
-  anchor: string;
-  fromtitle: string;
-  line: string;
-  number: string;
-  index: string;
+interface Props extends RouteComponentProps<{}, {}, Navigation> {
+  type: "edit" | "view";
 }
 
-function WikipediaView() {
+function WikipediaView(props: Props) {
   const { addWikipediaSection, removeWikipediaSection, project } = useContext(
     ProjectContext
   );
   const { url } = useRouteMatch();
-  const [data, setData] = useState<Data>();
-  const navigation = useContext(NavigationContext);
 
-  useEffect(() => {
-    const dataResponse = async () => {
-      const response = await getWikipediaQuery(navigation.wikipediaQuery);
-      setData(response);
-    };
-    dataResponse();
-  }, [navigation.wikipediaQuery]);
-
-  function handleChange(value: string) {
-    navigation.setWikipediaQuery(value);
-  }
-
-  function formatLevel(number: string) {
-    const level = number.split(".").length - 1;
-    return String(level);
-  }
-
-  const handleSectionToggle = (iconToggle: boolean, section: Section) => {
+  const handleSectionToggle = (
+    iconToggle: boolean,
+    section: WikipediaSection
+  ) => {
     iconToggle
-      ? addWikipediaSection(data!.title, {
-          level: formatLevel(section.number),
-          number: section.index,
-          title: section.line,
-        })
-      : removeWikipediaSection(data!.title, {
-          level: formatLevel(section.number),
-          number: section.index,
-          title: section.line,
-        });
-  };
-
-  const checkIfSelected = (wikipediaSection: Section) => {
-    let selected;
-    project.wikipediaArticles.forEach((article) => {
-      selected = article.sections.find(
-        (section) => section.title === wikipediaSection.line
-      );
-    });
-    return selected;
+      ? addWikipediaSection(props.location.state.title, section)
+      : removeWikipediaSection(props.location.state.title, section);
   };
 
   return (
     <View style={globalStyles.flex}>
-      <Input onChange={(value) => handleChange(value)} placeholder="Search" />
-      {navigation.wikipediaQuery ? (
-        <>
-          <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
-            Search results for: "{navigation.wikipediaQuery}"
-          </Text>
-          <ScrollView>
-            {data
-              ? data.sections.map((section: Section) => (
-                  <NavigationBar
-                    path={url + "/" + section.anchor.toLowerCase()}
-                    key={section.line}
-                    iconPress={(iconToggle) =>
-                      handleSectionToggle(iconToggle, section)
-                    }
-                    isSelected={checkIfSelected(section)}
-                    title={section.line}
-                    icon={"check-box"}
-                    level={formatLevel(section.number)}
-                    navigationProps={{
-                      section: section.index,
-                      type: "search",
-                    }}
-                  />
-                ))
-              : null}
-          </ScrollView>
-        </>
-      ) : (
-        <View style={{ ...styles.defaultContainer, ...globalStyles.flex }}>
-          <Text style={{ ...globalStyles.text, ...styles.defaultText }}>
-            Please enter a search term to view Wikipedia articles
-          </Text>
-        </View>
-      )}
+      <ScrollView>
+        {project.wikipediaArticles.map((article) =>
+          article.title === props.location.state.title
+            ? article.sections.map((section) => (
+                <NavigationBar
+                  title={section.title}
+                  key={section.number}
+                  icon={"check-box"}
+                  isSelected={true}
+                  iconPress={(iconToggle) =>
+                    handleSectionToggle(iconToggle, section)
+                  }
+                  level={section.number}
+                  path={url + "/" + section.title}
+                  navigationProps={{
+                    section: section.number,
+                  }}
+                />
+              ))
+            : null
+        )}
+      </ScrollView>
     </View>
   );
 }

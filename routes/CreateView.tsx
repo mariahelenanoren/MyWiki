@@ -15,8 +15,6 @@ export default function CreateView() {
   );
   const { addProject } = useContext(ProjectListContext);
 
-  console.log(project);
-
   const handlePress = (iconToggle: boolean, title: string) => {
     iconToggle ? null : removeImageSection(title);
   };
@@ -47,43 +45,29 @@ export default function CreateView() {
         >
           Add material
         </Text>
-        <NavigationBar
-          path={url + "/images"}
-          title="Images"
-          navigationProps={{ type: "search" }}
-        />
+        <NavigationBar path={url + "/images"} title="Images" />
         {project.imageSections.map((section) => (
           <NavigationBar
             key={section.title}
             title={section.title}
-            path={url + "/images"}
-            navigationProps={{ type: "view" }}
+            path={url + "/images/" + section.title}
             icon={"check-box"}
             isSelected={true}
             iconPress={(iconToggle) => handlePress(iconToggle, section.title)}
           />
         ))}
-        <NavigationBar
-          path={url + "/wikipedia"}
-          title="Wikipedia"
-          navigationProps={{ type: "search" }}
-        />
+        <NavigationBar path={url + "/wikipedia"} title="Wikipedia" />
         {project.wikipediaArticles.map((article) => (
           <NavigationBar
             key={article.title}
             title={article.title}
-            path={url + "/wikipedia"}
-            navigationProps={{ type: "view" }}
+            path={url + "/wikipedia/" + article.title}
             icon={"check-box"}
             isSelected={true}
             iconPress={(iconToggle) => handlePress(iconToggle, article.title)}
           />
         ))}
-        <NavigationBar
-          path={url + "/news-articles"}
-          title="News articles"
-          navigationProps={{ type: "search" }}
-        />
+        <NavigationBar path={url + "/news-articles"} title="News articles" />
       </View>
       <View style={{ ...styles.buttonContainer, ...globalStyles.flex }}>
         <MainButton
