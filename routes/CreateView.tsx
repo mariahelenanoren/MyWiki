@@ -7,6 +7,7 @@ import NavigationBar from "../components/NavigationBar";
 import MainButton from "../components/MainButton";
 import { ProjectContext } from "../contexts/ProjectContext";
 import { ProjectListContext } from "../contexts/ProjectListContext";
+import SelectionBar from "../components/SelectionBar";
 
 export default function CreateView() {
   const { url } = useRouteMatch();
@@ -47,7 +48,7 @@ export default function CreateView() {
         </Text>
         <NavigationBar path={url + "/images"} title="Images" />
         {project.imageSections.map((section) => (
-          <NavigationBar
+          <SelectionBar
             key={section.title}
             title={section.title}
             path={url + "/images/" + section.title}
@@ -58,7 +59,7 @@ export default function CreateView() {
         ))}
         <NavigationBar path={url + "/wikipedia"} title="Wikipedia" />
         {project.wikipediaArticles.map((article) => (
-          <NavigationBar
+          <SelectionBar
             key={article.title}
             title={article.title}
             path={url + "/wikipedia/" + article.title}

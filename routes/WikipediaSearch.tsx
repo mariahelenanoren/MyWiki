@@ -7,6 +7,7 @@ import { NavigationContext } from "../contexts/NavigationContext";
 import { getWikipediaQuery } from "../helper";
 import { ProjectContext, WikipediaArticle } from "../contexts/ProjectContext";
 import { colorPalette, globalStyles } from "../styling";
+import SelectionBar from "../components/SelectionBar";
 
 interface Data {
   title: string;
@@ -71,7 +72,7 @@ function WikipediaView() {
         (section) => section.title === wikipediaSection.line
       );
     });
-    return selected;
+    return Boolean(selected);
   };
 
   return (
@@ -85,7 +86,7 @@ function WikipediaView() {
           <ScrollView>
             {data
               ? data.sections.map((section: Section) => (
-                  <NavigationBar
+                  <SelectionBar
                     path={
                       url +
                       "/" +

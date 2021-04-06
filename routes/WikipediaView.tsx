@@ -5,16 +5,9 @@ import {
   useRouteMatch,
   withRouter,
 } from "react-router-native";
-import Input from "../components/Input";
-import NavigationBar from "../components/NavigationBar";
-import { NavigationContext } from "../contexts/NavigationContext";
-import { getWikipediaQuery } from "../helper";
-import {
-  ProjectContext,
-  WikipediaArticle,
-  WikipediaSection,
-} from "../contexts/ProjectContext";
+import { ProjectContext, WikipediaSection } from "../contexts/ProjectContext";
 import { colorPalette, globalStyles } from "../styling";
+import SelectionBar from "../components/SelectionBar";
 
 interface Navigation {
   title: string;
@@ -45,7 +38,7 @@ function WikipediaView(props: Props) {
         {project.wikipediaArticles.map((article) =>
           article.title === props.location.state.title
             ? article.sections.map((section) => (
-                <NavigationBar
+                <SelectionBar
                   title={section.title}
                   key={section.number}
                   icon={"check-box"}
