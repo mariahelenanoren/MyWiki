@@ -6,7 +6,6 @@ import WikipediaSearch from "./WikipediaSearch";
 import WikipediaSectionView from "./WikipediaSectionView";
 import ProjectView from "./CreateView";
 import NewsSearch from "./NewsSearch";
-import NavigationProvider from "../contexts/NavigationContext";
 import { globalStyles } from "../styling";
 import WikipediaView from "./WikipediaView";
 import ImagesView from "./ImagesView";
@@ -17,22 +16,20 @@ export default function CreateViewContainer() {
   return (
     <View style={globalStyles.flex}>
       <Switch>
-        <NavigationProvider>
-          <Route exact path={url} component={ProjectView} />
-          <Route exact path={url + "/images"} component={ImagesSearch} />
-          <Route path={url + "/images/:section"} component={ImagesView} />
-          <Route exact path={url + "/wikipedia"} component={WikipediaSearch} />
-          <Route
-            exact
-            path={url + "/wikipedia/:article"}
-            component={WikipediaView}
-          />
-          <Route
-            path={url + "/wikipedia/:article/:section"}
-            component={WikipediaSectionView}
-          />
-          <Route path={url + "/articles"} component={NewsSearch} />
-        </NavigationProvider>
+        <Route exact path={url} component={ProjectView} />
+        <Route exact path={url + "/images"} component={ImagesSearch} />
+        <Route path={url + "/images/:section"} component={ImagesView} />
+        <Route exact path={url + "/wikipedia"} component={WikipediaSearch} />
+        <Route
+          exact
+          path={url + "/wikipedia/:article"}
+          component={WikipediaView}
+        />
+        <Route
+          path={url + "/wikipedia/:article/:section"}
+          component={WikipediaSectionView}
+        />
+        <Route path={url + "/articles"} component={NewsSearch} />
       </Switch>
     </View>
   );

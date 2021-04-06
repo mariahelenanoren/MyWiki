@@ -2,10 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { useRouteMatch, withRouter } from "react-router-native";
 import Input from "../components/Input";
-import NavigationBar from "../components/NavigationBar";
-import { NavigationContext } from "../contexts/NavigationContext";
 import { getWikipediaQuery } from "../helper";
-import { ProjectContext, WikipediaArticle } from "../contexts/ProjectContext";
+import { ProjectContext } from "../contexts/ProjectContext";
 import { colorPalette, globalStyles } from "../styling";
 import SelectionBar from "../components/SelectionBar";
 
@@ -23,24 +21,20 @@ interface Section {
 }
 
 function WikipediaView() {
+  const [data, setData] = useState<Data>();
+  const [query, setQuery] = useState("");
   const { addWikipediaSection, removeWikipediaSection, project } = useContext(
     ProjectContext
   );
   const { url } = useRouteMatch();
-  const [data, setData] = useState<Data>();
-  const navigation = useContext(NavigationContext);
 
   useEffect(() => {
     const dataResponse = async () => {
-      const response = await getWikipediaQuery(navigation.wikipediaQuery);
+      const response = await getWikipediaQuery(query);
       setData(response);
     };
     dataResponse();
-  }, [navigation.wikipediaQuery]);
-
-  function handleChange(value: string) {
-    navigation.setWikipediaQuery(value);
-  }
+  }, [query]);
 
   function formatLevel(number: string) {
     const level = number.split(".").length - 1;
@@ -49,39 +43,38 @@ function WikipediaView() {
 
   const handleSectionToggle = (iconToggle: boolean, section: Section) => {
     iconToggle
-      ? addWikipediaSection(navigation.wikipediaQuery, {
+      ? addWikipediaSection(query, {
           level: formatLevel(section.number),
           number: section.index,
           title: section.line,
         })
-      : removeWikipediaSection(navigation.wikipediaQuery, {
+      : removeWikipediaSection(query, {
           level: formatLevel(section.number),
           number: section.index,
           title: section.line,
         });
   };
 
-  useEffect(() => {
-    console.log(project);
-  }, [project, addWikipediaSection]);
-
-  const checkIfSelected = (wikipediaSection: Section) => {
+  const checkIfSelected = (articleTitle: string, wikipediaSection: Section) => {
     let selected;
     project.wikipediaArticles.forEach((article) => {
-      selected = article.sections.find(
-        (section) => section.title === wikipediaSection.line
-      );
+      if (article.title === articleTitle) {
+        console.log(article.title);
+        selected = article.sections.find(
+          (section) => section.title === wikipediaSection.line
+        );
+      }
     });
     return Boolean(selected);
   };
 
   return (
     <View style={globalStyles.flex}>
-      <Input onChange={(value) => handleChange(value)} placeholder="Search" />
-      {navigation.wikipediaQuery ? (
+      <Input onChange={(value) => setQuery(value)} placeholder="Search" />
+      {query ? (
         <>
           <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
-            Search results for: "{navigation.wikipediaQuery}"
+            Search results for: "{query}"
           </Text>
           <ScrollView>
             {data
@@ -98,7 +91,7 @@ function WikipediaView() {
                     iconPress={(iconToggle) =>
                       handleSectionToggle(iconToggle, section)
                     }
-                    isSelected={checkIfSelected(section)}
+                    isSelected={checkIfSelected(data.title, section)}
                     title={section.line}
                     icon={"check-box"}
                     level={formatLevel(section.number)}

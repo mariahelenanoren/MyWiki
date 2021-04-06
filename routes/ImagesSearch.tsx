@@ -4,7 +4,6 @@ import Input from "../components/Input";
 import ImageContainer from "../components/ImageContainer";
 import { getImages } from "../helper";
 import { colorPalette, globalStyles } from "../styling";
-import { NavigationContext } from "../contexts/NavigationContext";
 import { RouteComponentProps, withRouter } from "react-router";
 import { ProjectContext } from "../contexts/ProjectContext";
 import MainButton from "../components/MainButton";
@@ -22,19 +21,19 @@ interface ImageUrl {
 interface Props extends RouteComponentProps<{}, {}, Navigation> {}
 
 function ImagesView(props: Props) {
-  const { imagesQuery, setImagesQuery } = useContext(NavigationContext);
   const { project, addImage, removeImage } = useContext(ProjectContext);
   const [data, setData] = useState<ImageUrl[]>([]);
+  const [query, setQuery] = useState("");
   const [pageCounter, setPageCounter] = useState(1);
   const scrollRef = useRef<ScrollView | null>(null);
 
   useEffect(() => {
     const dataResponse = async () => {
-      const response = await getImages(imagesQuery, pageCounter);
+      const response = await getImages(query, pageCounter);
       setData(response);
     };
     dataResponse();
-  }, [pageCounter, imagesQuery]);
+  }, [pageCounter, query]);
 
   const loadImages = () => {
     scrollRef.current?.scrollTo({
@@ -45,7 +44,7 @@ function ImagesView(props: Props) {
   };
 
   const handlePress = (selected: boolean, url: string) => {
-    selected ? addImage(url, imagesQuery) : removeImage(url, imagesQuery);
+    selected ? addImage(url, query) : removeImage(url, query);
   };
 
   const checkIfSelected = (imageUrl: string) => {
@@ -58,11 +57,11 @@ function ImagesView(props: Props) {
 
   return (
     <View style={globalStyles.flex}>
-      <Input placeholder="Search" onChange={(value) => setImagesQuery(value)} />
-      {imagesQuery ? (
+      <Input placeholder="Search" onChange={(value) => setQuery(value)} />
+      {query ? (
         <>
           <Text style={{ ...styles.query, ...globalStyles.semiBold }}>
-            Search results for: "{imagesQuery}"
+            Search results for: "{query}"
           </Text>
           <ScrollView
             ref={scrollRef}
@@ -74,7 +73,7 @@ function ImagesView(props: Props) {
                 isSelected={checkIfSelected(image.urls.small)}
                 key={image.urls.small}
                 url={image.urls.small}
-                searchTerm={imagesQuery}
+                searchTerm={query}
               />
             ))}
           </ScrollView>

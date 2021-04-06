@@ -11,13 +11,20 @@ import SelectionBar from "../components/SelectionBar";
 
 export default function CreateView() {
   const { url } = useRouteMatch();
-  const { project, setProjectInformation, removeImageSection } = useContext(
-    ProjectContext
-  );
+  const {
+    project,
+    setProjectInformation,
+    removeImageSection,
+    removeWikipediaArticle,
+  } = useContext(ProjectContext);
   const { addProject } = useContext(ProjectListContext);
 
-  const handlePress = (iconToggle: boolean, title: string) => {
+  const handleImagePress = (iconToggle: boolean, title: string) => {
     iconToggle ? null : removeImageSection(title);
+  };
+
+  const handleWikipediaPress = (iconToggle: boolean, title: string) => {
+    iconToggle ? null : removeWikipediaArticle(title);
   };
 
   return (
@@ -54,7 +61,9 @@ export default function CreateView() {
             path={url + "/images/" + section.title}
             icon={"check-box"}
             isSelected={true}
-            iconPress={(iconToggle) => handlePress(iconToggle, section.title)}
+            iconPress={(iconToggle) =>
+              handleImagePress(iconToggle, section.title)
+            }
           />
         ))}
         <NavigationBar path={url + "/wikipedia"} title="Wikipedia" />
@@ -65,7 +74,9 @@ export default function CreateView() {
             path={url + "/wikipedia/" + article.title}
             icon={"check-box"}
             isSelected={true}
-            iconPress={(iconToggle) => handlePress(iconToggle, article.title)}
+            iconPress={(iconToggle) =>
+              handleWikipediaPress(iconToggle, article.title)
+            }
           />
         ))}
         <NavigationBar path={url + "/news-articles"} title="News articles" />

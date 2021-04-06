@@ -9,6 +9,7 @@ interface ContextState extends ProjectState {
   addNewsArticle: (newsArticle: NewsArticle) => void;
   removeImage: (imageUrl: string, title: string) => void;
   removeImageSection: (titel: string) => void;
+  removeWikipediaArticle: (title: string) => void;
   removeWikipediaSection: (
     title: string,
     wikipediaSection: WikipediaSection
@@ -62,6 +63,7 @@ export const ProjectContext = createContext<ContextState>({
   addNewsArticle: () => {},
   removeImage: () => {},
   removeImageSection: () => {},
+  removeWikipediaArticle: () => {},
   removeWikipediaSection: () => {},
   removeNewsArticle: () => {},
 });
@@ -217,6 +219,18 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
     });
   };
 
+  removeWikipediaArticle = (title: string) => {
+    const filteredArticles = this.state.project.wikipediaArticles.filter(
+      (article) => article.title !== title
+    );
+    this.setState({
+      project: {
+        ...this.state.project,
+        wikipediaArticles: [...filteredArticles],
+      },
+    });
+  };
+
   removeWikipediaSection = (
     title: string,
     wikipediaSection: WikipediaSection
@@ -245,6 +259,9 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
             project: {
               ...this.state.project,
               wikipediaArticles: [
+                ...this.state.project.wikipediaArticles.filter(
+                  (article) => article.title !== changedArticle.title
+                ),
                 {
                   ...changedArticle,
                   sections: [
@@ -284,6 +301,7 @@ export default class ProjectProvider extends Component<{}, ProjectState> {
           addNewsArticle: this.addNewsArticle,
           removeImage: this.removeImage,
           removeImageSection: this.removeImageSection,
+          removeWikipediaArticle: this.removeWikipediaArticle,
           removeWikipediaSection: this.removeWikipediaSection,
           removeNewsArticle: this.removeNewsArticle,
         }}
